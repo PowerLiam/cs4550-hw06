@@ -18,9 +18,22 @@ import ReactDOM from "react-dom";
 
 import Spa from "./Spa";
 
+function Demo(_) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>
+        <button onClick={() => setCount(count + 1)}>+1</button>
+      </p>
+    </div>
+  );
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <Spa />
+    <Demo />
   </React.StrictMode>,
   document.getElementById("root")
 );

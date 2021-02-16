@@ -16,18 +16,7 @@ import "phoenix_html";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-function Demo(_) {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>Count: {count}</p>
-      <p>
-        <button onClick={() => setCount(count + 1)}>+1</button>
-      </p>
-    </div>
-  );
-}
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>

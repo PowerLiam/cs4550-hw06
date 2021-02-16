@@ -1,0 +1,12 @@
+.GuessDisplay-list {
+  display: flex;
+  flex-direction: column;
+}
+.GuessDisplay-element {
+  display: flex;
+  flex-direction: row;
+}
+
+.GuessDisplay-element > div {
+  padding-right: 10px;
+}

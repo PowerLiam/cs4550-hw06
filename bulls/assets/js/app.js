@@ -16,7 +16,7 @@ import "phoenix_html";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Spa from "./Spa";
+// import Spa from "./Spa";
 
 function Demo(_) {
   const [count, setCount] = useState(0);

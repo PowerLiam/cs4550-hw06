@@ -1,36 +1,14 @@
 import "../css/GuessDisplay.css";
 
-function GuessDisplay({state: { won, secret, guesses }}) {
-  function getCowCount(guess) {
-    let digits = guess.split("");
-    let secretDigits = secret.split("");
-    let secretDigitSet = new Set(secretDigits);
-
-    return digits.reduce(
-      (acc, cur, i) =>
-        cur !== secretDigits[i] && secretDigitSet.has(cur) ? acc + 1 : acc,
-      0
-    );
-  }
-
-  function getBullCount(guess) {
-    let digits = guess.split("");
-    let secretDigits = secret.split("");
-
-    return digits.reduce(
-      (acc, cur, i) => (cur === secretDigits[i] ? acc + 1 : acc),
-      0
-    );
-  }
-
+function GuessDisplay({ state: { won, secret, guesses } }) {
   return (
     <div className="GuessDisplay">
       <div className="GuessDisplay-list">
-        {guesses.map((guess, i) => (
+        {guesses.map(({ guess, cows, bulls }, i) => (
           <div className="GuessDisplay-element" key={guess}>
             <div>{guess}</div>
-            <div>Bulls: {getBullCount(guess)}</div>
-            <div>Cows: {getCowCount(guess)}</div>
+            <div>Bulls: {bulls}</div>
+            <div>Cows: {cows}</div>
           </div>
         ))}
       </div>

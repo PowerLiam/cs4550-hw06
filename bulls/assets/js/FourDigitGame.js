@@ -70,6 +70,28 @@ function FourDigitGame() {
     });
   }
 
+  function getCowCount(guess) {
+    let digits = guess.split("");
+    let secretDigits = state.secret.split("");
+    let secretDigitSet = new Set(secretDigits);
+
+    return digits.reduce(
+      (acc, cur, i) =>
+        cur !== secretDigits[i] && secretDigitSet.has(cur) ? acc + 1 : acc,
+      0
+    );
+  }
+
+  function getBullCount(guess) {
+    let digits = guess.split("");
+    let secretDigits = state.secret.split("");
+
+    return digits.reduce(
+      (acc, cur, i) => (cur === secretDigits[i] ? acc + 1 : acc),
+      0
+    );
+  }
+
   function handleGuess(guess) {
     if (state.guesses.length < 8 && validateGuess(guess)) {
       if (guess === state.secret) {
@@ -85,7 +107,11 @@ function FourDigitGame() {
         return {
           won: prevState.won,
           secret: prevState.secret,
-          guesses: prevState.guesses.concat(guess),
+          guesses: prevState.guesses.concat({
+            guess,
+            cows: getCowCount(guess),
+            bulls: getBullCount(bulls),
+          }),
         };
       });
     }

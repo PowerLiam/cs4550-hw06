@@ -4,9 +4,16 @@ import GuessEntry from "./GuessEntry.js";
 import { useState } from "react";
 
 function FourDigitGame() {
-  const [won, setWon] = useState(false);
-  const [secret, setSecret] = useState(generateSecret);
-  const [guesses, setGuesses] = useState([]);
+  // const [won, setWon] = useState(false);
+  // const [secret, setSecret] = useState(generateSecret);
+  // const [guesses, setGuesses] = useState([]);
+  const [state, setState] = useState(() => {
+    return {
+      won: false,
+      secret: generateSecret(),
+      guesses: [],
+    };
+  });
 
   function generateSecret() {
     let secret = "";
@@ -54,26 +61,42 @@ function FourDigitGame() {
   }
 
   function reset() {
-    setGuesses([]);
-    setSecret(generateSecret());
-    setWon(false);
+    setState((prevState) => {
+      return {
+        won: false,
+        secret: generateSecret(),
+        guesses: [],
+      };
+    });
   }
 
   function handleGuess(guess) {
     if (guesses.length <= 8 && validateGuess(guess)) {
       if (guess === secret) {
-        setWon(true);
+        setState((prevState) => {
+          return {
+            won: true,
+            secret: prevState.secret,
+            guesses: prevState.guesses,
+          };
+        });
       }
-      setGuesses(guesses.concat(guess));
+      setState((prevState) => {
+        return {
+          won: prevState.won,
+          secret: prevState.secret,
+          guesses: prevState.guesses.concat(guess),
+        };
+      });
     }
   }
 
   return (
     <div className="FourDigitGame">
-      <GuessDisplay guesses={guesses} secret={secret}></GuessDisplay>
+      <GuessDisplay state={state}></GuessDisplay>
       <GuessEntry handleGuess={handleGuess}></GuessEntry>
       <button onClick={reset}>Reset</button>
-      {won && <h1>You win!!!</h1>}
+      {state.won && <h1>You win!!!</h1>}
     </div>
   );
 }

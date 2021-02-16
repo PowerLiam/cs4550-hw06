@@ -1,6 +1,6 @@
 import "../css/GuessDisplay.css";
 
-function GuessDisplay({ guesses, secret }) {
+function GuessDisplay({state: { won, secret, guesses }}) {
   function getCowCount(guess) {
     let digits = guess.split("");
     let secretDigits = secret.split("");

@@ -3,16 +3,16 @@ Description=HW05 Elixir Bulls Game
 
 [Service]
 Type=simple
-User=practice
-Group=practice
+User=hw04
+Group=hw04
 Restart=on-failure
 Environment=MIX_ENV=prod
 Environment=PORT=4791
 Environment=PROD=true
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/practice/cs4550-hw05
-ExecStart=/bin/bash /home/practice/cs4550-hw05/start.sh
+WorkingDirectory=/home/hw04/cs4550-hw05
+ExecStart=/bin/bash /home/hw04/cs4550-hw05/start.sh
 
 [Install]
 WantedBy=multi-user.target

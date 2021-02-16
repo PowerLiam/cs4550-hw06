@@ -1,8 +1,18 @@
 #!/bin/bash
 
-export SECRET_KEY_BASE=W68eso5YQOlbtvSNUR50N/HDWj6IaEhAwMR3LtzuBEQAefwYVbX84bvoTA7XtiGi
+export SECRET_KEY_BASE=insecure
 export MIX_ENV=prod
-export PORT=4790
+export PORT=4791
+
+CFGD=$(readlink -f ~/.config/bulls)
+
+if [ ! -e "$CFGD/base" ]; then
+    echo "Need to deploy first"
+    exit 1
+fi
+
+SECRET_KEY_BASE=$(cat "$CFGD/base")
+export SECRET_KEY_BASE
 
 echo "Stopping old copy of app, if any..."
 

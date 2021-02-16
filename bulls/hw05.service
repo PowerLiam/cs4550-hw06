@@ -11,8 +11,8 @@ Environment=PORT=4791
 Environment=PROD=true
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/hw04/cs4550-hw05
-ExecStart=/bin/bash /home/hw04/cs4550-hw05/start.sh
+WorkingDirectory=/home/hw04/cs4550-hw05/bulls
+ExecStart=/bin/bash /home/hw04/cs4550-hw05/bulls/start.sh
 
 [Install]
 WantedBy=multi-user.target

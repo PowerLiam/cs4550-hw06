@@ -110,7 +110,7 @@ function FourDigitGame() {
           guesses: prevState.guesses.concat({
             guess,
             cows: getCowCount(guess),
-            bulls: getBullCount(bulls),
+            bulls: getBullCount(guess),
           }),
         };
       });

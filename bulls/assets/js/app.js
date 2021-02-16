@@ -18,6 +18,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Spa from "./Spa";
 
+window.React = React;
+
 ReactDOM.render(
   <React.StrictMode>
     <Spa />

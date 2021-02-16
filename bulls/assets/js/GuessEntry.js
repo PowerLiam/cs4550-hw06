@@ -1,11 +1,7 @@
 import "../css/GuessEntry.css";
 import { useState } from "react";
 
-function GuessEntry(
-  {
-    handleGuess,
-  }
-) {
+function GuessEntry({ handleGuess }) {
   const [displayText, setDisplayText] = useState("");
 
   function updateText(ev) {

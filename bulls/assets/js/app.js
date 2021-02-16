@@ -16,11 +16,11 @@ import "phoenix_html";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-import App from "./App";
+import Spa from "./Spa";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Demo />
+    <Spa />
   </React.StrictMode>,
   document.getElementById("root")
 );

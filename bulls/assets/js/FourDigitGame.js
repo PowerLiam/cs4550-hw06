@@ -71,8 +71,8 @@ function FourDigitGame() {
   }
 
   function handleGuess(guess) {
-    if (guesses.length <= 8 && validateGuess(guess)) {
-      if (guess === secret) {
+    if (state.guesses.length <= 8 && validateGuess(guess)) {
+      if (guess === state.secret) {
         setState((prevState) => {
           return {
             won: true,

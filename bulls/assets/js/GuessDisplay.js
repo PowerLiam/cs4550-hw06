@@ -1,4 +1,4 @@
-import "./GuessDisplay.css";
+import "../css/GuessDisplay.css";
 
 function GuessDisplay({ guesses, secret }) {
   function getCowCount(guess) {

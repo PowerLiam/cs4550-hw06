@@ -1,4 +1,4 @@
-import "./App.css";
+import "../css/Spa.css";
 import FourDigitGame from "./FourDigitGame";
 
 function Spa() {

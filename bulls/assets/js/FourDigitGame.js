@@ -1,4 +1,4 @@
-import "./FourDigitGame.css";
+import "../css/FourDigitGame.css";
 import GuessDisplay from "./GuessDisplay.js";
 import GuessEntry from "./GuessEntry.js";
 import { useState } from "react";

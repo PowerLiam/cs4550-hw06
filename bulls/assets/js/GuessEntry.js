@@ -1,4 +1,4 @@
-import "./GuessEntry.css";
+import "../css/GuessEntry.css";
 import { useState } from "react";
 
 function GuessEntry(

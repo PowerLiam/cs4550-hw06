@@ -13,7 +13,7 @@ import "../css/app.scss";
 //     import socket from "./socket"
 //
 import "phoenix_html";
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 import Spa from "./Spa";

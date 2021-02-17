@@ -27,7 +27,7 @@ function updateState(category, id, state) {
 }
 
 export function joinChannel(category, id, stateCallback) {
-  console.log("Joining channel " + category + ":" + id);
+  console.log("Joining channel " + getChannelName(category, id));
 
   let channelName = getChannelName(category, id);
   let channelState = channelStates[channelName];
@@ -63,7 +63,7 @@ export function joinChannel(category, id, stateCallback) {
 
 export function pushChannel(category, id, message) {
   console.log(
-    "Pushing to channel " + category + ":" + id + " | message: ",
+    "Pushing to channel " + getChannelName(category, id) + " | message: ",
     message
   );
 
@@ -79,7 +79,7 @@ export function pushChannel(category, id, message) {
 }
 
 export function resetChannel(category, id) {
-  console.log("Reseting channel " + category + ":" + id);
+  console.log("Reseting channel " + getChannelName(category, id));
 
   let channelName = getChannelName(category, id);
   channelStates[channelName].channel

@@ -34,7 +34,7 @@ defmodule Bulls.Game do
     end
 
     digit = Enum.random([1,2,3,4,5,6,7,8,9])
-    if !MapSet.member(MapSet.new(digits), digit) do
+    if !MapSet.member?(MapSet.new(digits), digit) do
       random_secret(digits ++ digit)
     else
       random_secret(digits)
@@ -46,7 +46,7 @@ defmodule Bulls.Game do
     cond do
       guessLen == 0 ->
         true
-      MapSet.member(digitSet, String.first(guess)) ->
+      MapSet.member?(digitSet, String.first(guess)) ->
         false
       true ->
         validate_guess(
@@ -55,14 +55,13 @@ defmodule Bulls.Game do
     end
   end
 
-  def cow_count(secret, guess, acc) do
-    digitList = String.graphmes(guess)
-    digitSet = MapSet.new(digitList)
-    secretList = String.graphmes(secret)
-    secretSet = MapSet.new(String.graphmes(secret))
+  def cow_count(secret, guess) do
+    digitList = String.graphemes(guess)
+    secretList = String.graphemes(secret)
+    secretSet = MapSet.new(String.graphemes(secret))
 
     Enum.reduce(Enum.with_index(digitList), 0, fn ({digit, index}, acc) ->
-        if digit != secretList[index] and MapSet.member(secretSet, digit) do
+        if digit != secretList[index] and MapSet.member?(secretSet, digit) do
           acc + 1
         else
           acc
@@ -70,11 +69,9 @@ defmodule Bulls.Game do
     end)
   end
 
-  def bull_count(secret, guess, acc) do
-    digitList = String.graphmes(guess)
-    digitSet = MapSet.new(digitList)
-    secretList = String.graphmes(secret)
-    secretSet = MapSet.new(String.graphmes(secret))
+  def bull_count(secret, guess) do
+    digitList = String.graphemes(guess)
+    secretList = String.graphemes(secret)
 
     Enum.reduce(Enum.with_index(digitList), 0, fn ({digit, index}, acc) ->
         if digit == secretList[index] do

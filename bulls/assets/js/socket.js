@@ -14,7 +14,7 @@ function getChannelName(category, id) {
 }
 
 function updateState(category, id, state) {
-  channelName = getChannelName(category, id);
+  let channelName = getChannelName(category, id);
 
   channelStates[channelName].state = state;
   // Call back each user interested in the state of this channel, even the ones
@@ -25,8 +25,8 @@ function updateState(category, id, state) {
 }
 
 export function joinChannel(category, id, stateCallback) {
-  channelName = getChannelName(category, id);
-  channelState = channelStates[channelName];
+  let channelName = getChannelName(category, id);
+  let channelState = channelStates[channelName];
 
   if (channelState === undefined) {
     channelStates[channelName] = {
@@ -56,7 +56,7 @@ export function joinChannel(category, id, stateCallback) {
 }
 
 export function pushChannel(category, id, message) {
-  channelName = getChannelName(category, id);
+  let channelName = getChannelName(category, id);
   channelState[channelName].channel
     .push("message", message)
     .receive("ok", (resp) => {
@@ -68,7 +68,7 @@ export function pushChannel(category, id, message) {
 }
 
 export function resetChannel(category, id) {
-  channelName = getChannelName(category, id);
+  let channelName = getChannelName(category, id);
   channelState[channelName].channel
     .push("reset", {})
     .receive("ok", (resp) => {

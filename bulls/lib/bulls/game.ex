@@ -33,7 +33,7 @@ defmodule Bulls.Game do
       Enum.join(digits, "")
     end
 
-    digit = Enum.random(1...9)
+    digit = Enum.random([1,2,3,4,5,6,7,8,9])
     if !MapSet.member(MapSet.new(digits), digit) do
       random_secret(digits ++ digit)
     else

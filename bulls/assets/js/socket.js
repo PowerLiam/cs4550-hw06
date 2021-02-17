@@ -19,7 +19,9 @@ function updateState(category, id, state) {
   channelStates[channelName].state = state;
   // Call back each user interested in the state of this channel, even the ones
   // that didn't explicitly push the message that caused this state change.
-  channelStates[channelName].callbacks.forEach((callback, _, _) => callback(state))
+  channelStates[channelName].callbacks.forEach((callback, _dup, _set) =>
+    callback(state)
+  );
 }
 
 export function joinChannel(category, id, stateCallback) {
@@ -30,7 +32,7 @@ export function joinChannel(category, id, stateCallback) {
     channelStates[channelName] = {
       channel: socket.channel(channelName),
       callbacks: Set(),
-      // The user isn't called back with the state until it has been provided 
+      // The user isn't called back with the state until it has been provided
       // from the server.
       state: undefined,
     };

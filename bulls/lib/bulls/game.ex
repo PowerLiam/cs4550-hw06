@@ -21,8 +21,8 @@ defmodule Bulls.Game do
       guesses: Enum.map(MapSet.to_list(st.guesses), fn (guess) -> 
         %{
           guess: guess,
-          cows: cow_count(secret, guess, 0),
-          bulls: bull_count(secret, guess, 0)
+          cows: cow_count(secret, guess),
+          bulls: bull_count(secret, guess)
         }
       end),
     }

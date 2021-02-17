@@ -50,6 +50,8 @@ export function joinChannel(category, id, stateCallback) {
     stateCallback(channelState.state);
   }
 
+  let callbacksForChannel = channelState.callbacks;
+
   if (!callbacksForChannel.has(stateCallback)) {
     callbacksForChannel.add(stateCallback);
   }

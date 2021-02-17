@@ -54,11 +54,11 @@ export function joinChannel(category, id, stateCallback) {
     stateCallback(channelState.state);
   }
 
-  let callbacksForChannel = channelStates[channelName].callbacks;
-
-  if (!callbacksForChannel.has(stateCallback)) {
-    callbacksForChannel.add(stateCallback);
+  if (!channelStates[channelName].callbacks.has(stateCallback)) {
+    channelStates[channelName].callbacks.add(stateCallback);
   }
+
+  console.log(channelStates[channelName].callbacks);
 }
 
 export function pushChannel(category, id, message) {

@@ -51,7 +51,7 @@ defmodule Bulls.Game do
       true ->
         validate_guess(
           String.slice(guess, 1, guessLen),
-          MapSet.add(digitSet, String.first(guess)))
+          MapSet.put(digitSet, String.first(guess)))
     end
   end
 

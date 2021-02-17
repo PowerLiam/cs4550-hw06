@@ -9,7 +9,7 @@ defmodule Bulls.Game do
 
   def guess(st, guess) do
     if validate_guess(guess, MapSet.new()) do
-      %{ st | guesses: MapSet.put(st.guesses, letter) }
+      %{ st | guesses: MapSet.put(st.guesses, guess) }
     else
       st
     end

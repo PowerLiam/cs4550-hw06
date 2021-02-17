@@ -56,7 +56,6 @@ defmodule Bulls.Game do
   end
 
   def cow_count(secret, guess, acc) do
-    secret = st[:secret]
     digitList = String.graphmes(guess)
     digitSet = MapSet.new(digitList)
     secretList = String.graphmes(secret)
@@ -72,7 +71,6 @@ defmodule Bulls.Game do
   end
 
   def bull_count(secret, guess, acc) do
-    secret = st[:secret]
     digitList = String.graphmes(guess)
     digitSet = MapSet.new(digitList)
     secretList = String.graphmes(secret)

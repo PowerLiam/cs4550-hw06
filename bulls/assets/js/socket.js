@@ -40,7 +40,7 @@ export function joinChannel(category, id, stateCallback) {
     // must be made.
     channelStates[channelName].channel
       .join()
-      .receive("ok", state_update)
+      .receive("ok", updateState)
       .receive("error", (resp) => {
         console.error("Unable to join channel with name " + channelName, resp);
       });

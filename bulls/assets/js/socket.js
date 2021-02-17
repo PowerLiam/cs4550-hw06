@@ -31,7 +31,7 @@ export function joinChannel(category, id, stateCallback) {
   if (channelState === undefined) {
     channelStates[channelName] = {
       channel: socket.channel(channelName),
-      callbacks: Set(),
+      callbacks: new Set(),
       // The user isn't called back with the state until it has been provided
       // from the server.
       state: undefined,

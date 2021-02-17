@@ -16,7 +16,7 @@ function FourDigitGame() {
 
   useEffect(() => {
     joinChannel(channelCategory, channelId, setState);
-  });
+  }, [channelCategory, channelId]);
 
   function reset() {
     resetChannel(channelCategory, channelId);
@@ -33,7 +33,9 @@ function FourDigitGame() {
     <div className="FourDigitGame">
       <GuessDisplay state={state}></GuessDisplay>
       <GuessEntry
-        handleGuess={(guess) => pushChannel(channelCategory, channelId, {guess})}
+        handleGuess={(guess) =>
+          pushChannel(channelCategory, channelId, { guess })
+        }
       ></GuessEntry>
       <button onClick={() => resetChannel(channelCategory, channelId)}>
         Reset

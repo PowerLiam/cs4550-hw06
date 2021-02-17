@@ -59,7 +59,7 @@ export function joinChannel(category, id, stateCallback) {
 
 export function pushChannel(category, id, message) {
   let channelName = getChannelName(category, id);
-  channelState[channelName].channel
+  channelStates[channelName].channel
     .push("message", message)
     .receive("ok", (resp) => {
       updateState(category, id, resp);
@@ -71,7 +71,7 @@ export function pushChannel(category, id, message) {
 
 export function resetChannel(category, id) {
   let channelName = getChannelName(category, id);
-  channelState[channelName].channel
+  channelStates[channelName].channel
     .push("reset", {})
     .receive("ok", (resp) => {
       updateState(category, id, resp);

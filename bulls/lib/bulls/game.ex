@@ -2,7 +2,7 @@ defmodule Bulls.Game do
 
   def new do
     %{
-      secret: random_secret(),
+      secret: random_secret([]),
       guesses: MapSet.new(),
     }
   end

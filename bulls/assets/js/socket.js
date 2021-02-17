@@ -64,10 +64,12 @@ export function joinChannel(category, id, stateCallback) {
 export function pushChannel(category, id, message) {
   console.log(
     "Pushing to channel " + getChannelName(category, id) + " | message: ",
-    message
+    message,
+    channelStates[channelName].channel
   );
 
   let channelName = getChannelName(category, id);
+
   channelStates[channelName].channel
     .push("message", message)
     .receive("ok", (resp) => {

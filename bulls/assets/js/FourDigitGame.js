@@ -8,11 +8,7 @@ function FourDigitGame() {
   const channelCategory = "game";
   const channelId = "1";
 
-  const [state, setState] = useState(() => {
-    return {
-      guesses: [],
-    };
-  });
+  const [state, setState] = useState({ guesses: [] });
 
   useEffect(() => {
     joinChannel(channelCategory, channelId, setState);
@@ -25,7 +21,7 @@ function FourDigitGame() {
   function won() {
     return state.guesses.reduce((guess, acc) => {
       let correct = guess.bulls === 4;
-      console.log(guess.bulls);
+      console.log(guess);
       console.log(correct);
       return acc || correct;
     }, false);

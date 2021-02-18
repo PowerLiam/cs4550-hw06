@@ -9,10 +9,13 @@ defmodule Bulls.Game do
 
   def guess(st, guess) do
     {valid_guess, _} = validate_guess(guess, MapSet.new(st.guesses))
-    if valid_guess do
-      %{ st | guesses: st.guesses ++ [guess] }
-    else
-      st
+    cond do
+      won(st) ->
+        st
+      valid_guess ->
+        %{ st | guesses: st.guesses ++ [guess] }
+      true
+        st
     end
   end
 
@@ -43,8 +46,18 @@ defmodule Bulls.Game do
     end
   end
 
+  def won(st) do
+    Enum.reduce(st.guesses), 
+      false, 
+      fn (guess, acc) ->
+        acc || (bull_count(st.secret, guess) == 4)
+      end)
+  end
+
   def validate_guess(guess, guesses) do
     cond do
+      Enum.count(guesses) >= 8 ->
+        {false, "already guessed 8 times"}
       MapSet.member?(guesses, guess) ->
         {false, "duplicate guess"}
       String.length(guess) != 4 ->

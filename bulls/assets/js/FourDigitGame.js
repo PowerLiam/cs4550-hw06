@@ -29,6 +29,14 @@ function FourDigitGame() {
     );
   }
 
+  function lost() {
+    return !won() && livesRemaining() === 0;
+  }
+
+  function livesRemaining() {
+    return 8 - state.guesses.length;
+  }
+
   return (
     <div className="FourDigitGame">
       <GuessDisplay state={state}></GuessDisplay>
@@ -40,6 +48,10 @@ function FourDigitGame() {
       <button onClick={() => resetChannel(channelCategory, channelId)}>
         Reset
       </button>
+      <div>
+        <h2>Lives remaining: {8 - state.guesses.length}</h2>
+      </div>
+      {lost() && <h1>You lose... Try again by pressing reset!</h1>}
       {won() && <h1>You win!!!</h1>}
     </div>
   );

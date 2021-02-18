@@ -42,17 +42,30 @@ defmodule Bulls.Game do
     end
   end
 
-  def validate_guess(guess, digitSet) do
-    guessLen = String.length(guess)
+  def validate_guess(guess, guesses) do
     cond do
-      guessLen == 0 ->
-        true
-      MapSet.member?(digitSet, String.first(guess)) ->
-        false
+      MapSet.member?(guesses, guess) ->
+        {false, "duplicate guess"}
+      String.length(guess) != 4 ->
+        {false, "guess wasn't 4 digits"}
       true ->
-        validate_guess(
-          String.slice(guess, 1, guessLen),
-          MapSet.put(digitSet, String.first(guess)))
+        {_, unique} = 
+          Enum.reduce(Enum.with_index(guess), 
+            {MapSet.new(), true}, 
+            fn ({digit, index}, {digitsSeen, result}) ->
+              updatedDigitsSeen = MapSet.put(digitsSeen, digit)
+              if MapSet.member?(digitsSeen, digit) do
+                {updatedDigitsSeen, false}
+              else
+                {updatedDigitsSeen, result && true}
+              end
+            end)
+
+        if unique do
+          {true, ""}
+        else
+          {false, "guess contained duplicate digits"}
+        end
     end
   end
 

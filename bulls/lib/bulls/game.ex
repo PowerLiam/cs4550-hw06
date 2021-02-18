@@ -47,10 +47,10 @@ defmodule Bulls.Game do
   end
 
   def won(st) do
-    Enum.reduce(st.guesses, 
-      false, 
+    Enum.reduce(st.guesses, false, 
       fn (guess, acc) ->
-        acc || (bull_count(st.secret, guess) == 4)
+        IO.puts(bull_count(st.secret, guess))
+        acc || bull_count(st.secret, guess) == 4
       end)
   end
 

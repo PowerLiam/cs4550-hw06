@@ -8,7 +8,8 @@ defmodule Bulls.Game do
   end
 
   def guess(st, guess) do
-    if validate_guess(guess, MapSet.new()) do
+    {_, valid_guess} = validate_guess(guess, st.guesses)
+    if valid_guess do
       %{ st | guesses: st.guesses ++ [guess] }
     else
       st

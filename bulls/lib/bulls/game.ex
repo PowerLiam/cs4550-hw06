@@ -3,13 +3,13 @@ defmodule Bulls.Game do
   def new do
     %{
       secret: random_secret([]),
-      guesses: MapSet.new(),
+      guesses: [],
     }
   end
 
   def guess(st, guess) do
     if validate_guess(guess, MapSet.new()) do
-      %{ st | guesses: MapSet.put(st.guesses, guess) }
+      %{ st | guesses: st.guesses ++ [guess] }
     else
       st
     end
@@ -18,7 +18,7 @@ defmodule Bulls.Game do
   def view(st) do
     secret = st[:secret]
     %{
-      guesses: Enum.map(MapSet.to_list(st.guesses), fn (guess) -> 
+      guesses: Enum.map(st.guesses, fn (guess) -> 
         %{
           guess: guess,
           cows: cow_count(secret, guess),
@@ -34,12 +34,9 @@ defmodule Bulls.Game do
       Enum.join(digits, "")
     else
       digit = Enum.random([1,2,3,4,5,6,7,8,9])
-      IO.puts("Trying #{digit}")
       if !MapSet.member?(MapSet.new(digits), digit) do
-        IO.puts("Accepted")
         random_secret(digits ++ [digit])
       else
-        IO.puts("Retry")
         random_secret(digits)
       end
     end

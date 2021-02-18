@@ -24,7 +24,7 @@ function FourDigitGame() {
 
   function won() {
     return state.guesses.reduce((guess, acc) => {
-      correct = guess.bulls === 4;
+      let correct = guess.bulls === 4;
       console.log(guess.bulls);
       console.log(correct);
       return acc || correct;

@@ -19,13 +19,8 @@ function FourDigitGame() {
   }
 
   function won() {
-    console.log(state);
-    console.log(state.guesses);
-    return state.guesses.reduce((guess, acc) => {
-      let correct = guess.bulls === 4;
-      console.log(guess);
-      console.log(correct);
-      return acc || correct;
+    return state.guesses.reduce((acc, guess) => {
+      return acc || guess.bulls === 4;
     }, false);
   }
 

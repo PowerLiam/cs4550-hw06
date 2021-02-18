@@ -22,7 +22,7 @@ defmodule BullsWeb.GameChannel do
         {:error, %{reason: "unauthorized"}}
       end
     rescue
-      err in RuntimeError -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
+      err in Exception -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
       {:error, %{reason: "runtime error"}}
     end
   end
@@ -37,7 +37,7 @@ defmodule BullsWeb.GameChannel do
       view = Game.view(game1)
       {:reply, {:ok, view}, socket1}
     rescue
-      err in RuntimeError -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
+      err in Exception -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
       {:error, %{reason: "runtime error"}}
     end
   end
@@ -51,7 +51,7 @@ defmodule BullsWeb.GameChannel do
       view = Game.view(game)
       {:reply, {:ok, view}, socket}
     rescue
-      err in RuntimeError -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
+      err in Exception -> IO.puts(Exception.format(:error, err, __STACKTRACE__))
       {:error, %{reason: "runtime error"}}
     end
   end

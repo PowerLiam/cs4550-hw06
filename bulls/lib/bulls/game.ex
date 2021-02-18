@@ -65,7 +65,7 @@ defmodule Bulls.Game do
     secretSet = MapSet.new(String.graphemes(secret))
 
     Enum.reduce(Enum.with_index(digitList), 0, fn ({digit, index}, acc) ->
-        if digit != secretList[index] and MapSet.member?(secretSet, digit) do
+        if digit != Enum.at(secretList, index) and MapSet.member?(secretSet, digit) do
           acc + 1
         else
           acc
@@ -78,7 +78,7 @@ defmodule Bulls.Game do
     secretList = String.graphemes(secret)
 
     Enum.reduce(Enum.with_index(digitList), 0, fn ({digit, index}, acc) ->
-        if digit == secretList[index] do
+        if digit == Enum.at(secretList, index) do
           acc + 1
         else
           acc

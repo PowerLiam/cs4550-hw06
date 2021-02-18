@@ -9,6 +9,7 @@ defmodule BullsWeb.GameChannel do
     IO.puts("JOIN")
     try do
       if authorized?(payload) do
+        IO.puts("CREATING NEW GAME")
         game = Game.new
         IO.puts("CREATED GAME FOR CHANNEL")
         socket = assign(socket, :game, game)

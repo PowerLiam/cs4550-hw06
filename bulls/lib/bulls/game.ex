@@ -14,7 +14,7 @@ defmodule Bulls.Game do
         st
       valid_guess ->
         %{ st | guesses: st.guesses ++ [guess] }
-      true
+      true ->
         st
     end
   end

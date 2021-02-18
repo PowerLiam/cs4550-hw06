@@ -23,10 +23,11 @@ function FourDigitGame() {
   }
 
   function won() {
-    return state.guesses.reduce(
-      (guess, acc) => acc || guess.bulls === 4,
-      false
-    );
+    return state.guesses.reduce((guess, acc) => {
+      console.log(guess.bulls);
+      console.log(acc || guess.bulls === 4);
+      return acc || guess.bulls === 4;
+    }, false);
   }
 
   function lost() {

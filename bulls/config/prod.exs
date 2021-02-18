@@ -15,7 +15,7 @@ config :bulls, BullsWeb.Endpoint,
   debug_errors: true
 
 # Do not print debug messages in production
-config :logger, :console
+config :logger
 
 # ## SSL Support
 #

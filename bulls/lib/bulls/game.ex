@@ -34,7 +34,7 @@ defmodule Bulls.Game do
       Enum.join(digits, "")
     end
 
-    digit = Enum.random([1,2,3,4,5,6,7,8,9])
+    digit = Enum.random([1,2,3,4,5,6,7,8,9])[0]
     IO.puts("Trying #{digit}")
     if !MapSet.member?(MapSet.new(digits), digit) do
       IO.puts("Retry")

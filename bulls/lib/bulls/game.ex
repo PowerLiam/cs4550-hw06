@@ -32,16 +32,16 @@ defmodule Bulls.Game do
     IO.inspect(digits)
     if (Enum.count(digits) == 4) do
       Enum.join(digits, "")
-    end
-
-    digit = Enum.random([1,2,3,4,5,6,7,8,9])
-    IO.puts("Trying #{digit}")
-    if !MapSet.member?(MapSet.new(digits), digit) do
-      IO.puts("Accepted")
-      random_secret(digits ++ [digit])
     else
-      IO.puts("Retry")
-      random_secret(digits)
+      digit = Enum.random([1,2,3,4,5,6,7,8,9])
+      IO.puts("Trying #{digit}")
+      if !MapSet.member?(MapSet.new(digits), digit) do
+        IO.puts("Accepted")
+        random_secret(digits ++ [digit])
+      else
+        IO.puts("Retry")
+        random_secret(digits)
+      end
     end
   end
 

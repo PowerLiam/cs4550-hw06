@@ -50,7 +50,7 @@ defmodule Bulls.Game do
         {false, "guess wasn't 4 digits"}
       true ->
         {_, unique} = 
-          Enum.reduce(Enum.with_index(guess), 
+          Enum.reduce(Enum.with_index(guess.graphemes), 
             {MapSet.new(), true}, 
             fn ({digit, index}, {digitsSeen, result}) ->
               updatedDigitsSeen = MapSet.put(digitsSeen, digit)

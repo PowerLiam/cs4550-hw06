@@ -1,5 +1,6 @@
 defmodule BullsWeb.GameChannel do
   use BullsWeb, :channel
+  require Logger
 
   alias Bulls.Game
 
@@ -24,20 +25,30 @@ defmodule BullsWeb.GameChannel do
   @impl true
   def handle_in("message", %{"guess" => guess}, socket0) do
     IO.puts("MSG")
-    game0 = socket0.assigns[:game]
-    game1 = Game.guess(game0, guess)
-    socket1 = assign(socket0, :game, game1)
-    view = Game.view(game1)
-    {:reply, {:ok, view}, socket1}
+    try do
+      game0 = socket0.assigns[:game]
+      game1 = Game.guess(game0, guess)
+      socket1 = assign(socket0, :game, game1)
+      view = Game.view(game1)
+      {:reply, {:ok, view}, socket1}
+    rescue
+      err in RuntimeError -> Logger.error(Exception.format(:error, err, __STACKTRACE__))
+      {:error, %{reason: "runtime error"}}
+    end
   end
 
   @impl true
   def handle_in("reset", _, socket) do
     IO.puts("RESET")
-    game = Game.new
-    socket = assign(socket, :game, game)
-    view = Game.view(game)
-    {:reply, {:ok, view}, socket}
+    try do
+      game = Game.new
+      socket = assign(socket, :game, game)
+      view = Game.view(game)
+      {:reply, {:ok, view}, socket}
+    rescue
+      err in RuntimeError -> Logger.error(Exception.format(:error, err, __STACKTRACE__))
+      {:error, %{reason: "runtime error"}}
+    end
   end
 
   # Add authorization logic here as required.

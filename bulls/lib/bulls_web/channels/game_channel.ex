@@ -6,14 +6,18 @@ defmodule BullsWeb.GameChannel do
   @impl true
   def join("game:" <> _id, payload, socket) do
     IO.puts("JOIN")
-
-    if authorized?(payload) do
-      game = Game.new
-      socket = assign(socket, :game, game)
-      view = Game.view(game)
-      {:ok, view, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
+    try do
+      if authorized?(payload) do
+        game = Game.new
+        socket = assign(socket, :game, game)
+        view = Game.view(game)
+        {:ok, view, socket}
+      else
+        {:error, %{reason: "unauthorized"}}
+      end
+    rescue
+      err in RuntimeError -> Logger.error(Exception.format(:error, err, __STACKTRACE__))
+      {:error, %{reason: "runtime error"}}
     end
   end
 

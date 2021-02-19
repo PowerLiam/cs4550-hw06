@@ -17,7 +17,6 @@ defmodule BullsWeb.GameChannel do
       IO.puts("OBTAINED GAME VIEW")
       {:ok, view, socket}
     else
-      IO.puts("UNAUTHORIZED")
       {:error, %{reason: "unauthorized"}}
     end
   end

@@ -33,7 +33,6 @@ defmodule Bulls.Game do
   end
 
   def random_secret(digits) do
-    IO.inspect(digits)
     if (Enum.count(digits) == 4) do
       Enum.join(digits, "")
     else
@@ -49,7 +48,6 @@ defmodule Bulls.Game do
   def won(st) do
     Enum.reduce(st.guesses, false, 
       fn (guess, acc) ->
-        IO.puts(bull_count(st.secret, guess))
         acc || bull_count(st.secret, guess) == 4
       end)
   end

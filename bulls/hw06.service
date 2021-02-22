@@ -1,5 +1,5 @@
 [Unit]
-Description=HW05 Elixir Bulls Game
+Description=HW06 Elixir Bulls Game
 
 [Service]
 Type=simple
@@ -11,8 +11,8 @@ Environment=PORT=4791
 Environment=PROD=true
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/hw04/cs4550-hw05/bulls
-ExecStart=/bin/bash /home/hw04/cs4550-hw05/bulls/start.sh
+WorkingDirectory=/home/hw04/cs4550-hw06/bulls
+ExecStart=/bin/bash /home/hw04/cs4550-hw06/bulls/start.sh
 
 [Install]
 WantedBy=multi-user.target

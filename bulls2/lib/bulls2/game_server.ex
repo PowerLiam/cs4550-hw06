@@ -3,6 +3,7 @@ defmodule Bulls2.GameServer do
 
   alias Bulls2.Game
   alias Bulls2.GameSup
+  alias Bulls2.BackupAgent
 
   # ----------------------------- API -------------------------------
 

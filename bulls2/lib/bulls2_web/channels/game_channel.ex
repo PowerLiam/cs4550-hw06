@@ -3,6 +3,7 @@ defmodule Bulls2Web.GameChannel do
   require Logger
 
   alias Bulls2.Game
+  alias Bulls2.GameServer
 
   @impl true
   def join("game:" <> id, %{"user" => user}, socket) do

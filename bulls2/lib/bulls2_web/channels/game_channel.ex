@@ -38,8 +38,8 @@ defmodule Bulls2Web.GameChannel do
 
     # Make the guess, mutating the game, then obtain a view.
     view = socket.assigns[:id]
-    |> GameServer.guess(guess)
-    |> Game.view(user)
+    |> GameServer.guess(user, guess)
+    |> Game.view()
 
     # Return the view to the user.
     {:reply, {:ok, view}, socket}

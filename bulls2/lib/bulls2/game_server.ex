@@ -60,10 +60,10 @@ defmodule Bulls2.GameServer do
   # Unused for now
   def handle_info(:pook, game) do
     game = Game.guess(game, "q")
-    HangmanWeb.Endpoint.broadcast!(
+    Bulls2.Endpoint.broadcast!(
       "game:1", # FIXME: Game name should be in state
       "view",
-      Game.view(game, ""))
+      Game.view(game))
     {:noreply, game}
   end
 end

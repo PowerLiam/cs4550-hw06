@@ -26,7 +26,7 @@ function updateState(category, id, state) {
   );
 }
 
-export function joinChannel(category, id, stateCallback) {
+export function joinChannel(category, id, user, stateCallback) {
   console.log("Joining channel " + getChannelName(category, id));
 
   let channelName = getChannelName(category, id);
@@ -66,7 +66,7 @@ export function joinChannel(category, id, stateCallback) {
   }
 }
 
-export function pushChannel(category, id, message) {
+export function pushChannel(category, id, type, message) {
   let channelName = getChannelName(category, id);
 
   console.log(
@@ -76,7 +76,7 @@ export function pushChannel(category, id, message) {
   );
 
   channelStates[channelName].channel
-    .push("message", message)
+    .push(type, message)
     .receive("ok", (resp) => {
       updateState(category, id, resp);
     })

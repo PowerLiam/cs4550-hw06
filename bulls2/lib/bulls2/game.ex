@@ -7,7 +7,7 @@ defmodule Bulls2.Game do
     }
   end
 
-  def guess(st, guess) do
+  def guess(st, {user, guess}) do
     {valid_guess, _} = validate_guess(guess, MapSet.new(st.guesses))
     cond do
       won(st) ->

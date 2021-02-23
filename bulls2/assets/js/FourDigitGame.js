@@ -5,17 +5,18 @@ import GuessEntry from "./GuessEntry.js";
 import { joinChannel, pushChannel, resetChannel } from "./socket.js";
 
 function FourDigitGame() {
-  const channelCategory = "game";
-  const channelId = "1";
+  const CHANNEL_CATEGORY = "game";
+  const CHANNEL_ID = "1";
+  const USER = "testuser";
 
   const [state, setState] = useState({ guesses: [] });
 
   useEffect(() => {
-    joinChannel(channelCategory, channelId, setState);
-  }, [channelCategory, channelId]);
+    joinChannel(CHANNEL_CATEGORY, CHANNEL_ID, USER, setState);
+  }, [CHANNEL_CATEGORY, CHANNEL_ID, USER]);
 
   function reset() {
-    resetChannel(channelCategory, channelId);
+    resetChannel(CHANNEL_CATEGORY, CHANNEL_ID);
   }
 
   function won() {
@@ -37,12 +38,9 @@ function FourDigitGame() {
       <GuessDisplay state={state}></GuessDisplay>
       <GuessEntry
         handleGuess={(guess) =>
-          pushChannel(channelCategory, channelId, { guess })
+          pushChannel(CHANNEL_CATEGORY, CHANNEL_ID, "guess", { guess })
         }
       ></GuessEntry>
-      <button onClick={() => resetChannel(channelCategory, channelId)}>
-        Reset
-      </button>
       <div>
         <h2>Lives remaining: {8 - state.guesses.length}</h2>
       </div>

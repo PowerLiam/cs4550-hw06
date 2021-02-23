@@ -8,16 +8,13 @@ function FourDigitGame() {
   const CHANNEL_CATEGORY = "game";
   const CHANNEL_ID = "1";
   const USER = "testuser";
+  const GUESS_PUSH_TYPE = "guess";
 
   const [state, setState] = useState({ guesses: [] });
 
   useEffect(() => {
     joinChannel(CHANNEL_CATEGORY, CHANNEL_ID, USER, setState);
   }, [CHANNEL_CATEGORY, CHANNEL_ID, USER]);
-
-  function reset() {
-    resetChannel(CHANNEL_CATEGORY, CHANNEL_ID);
-  }
 
   function won() {
     return state.guesses.reduce((acc, guess) => {
@@ -38,7 +35,9 @@ function FourDigitGame() {
       <GuessDisplay state={state}></GuessDisplay>
       <GuessEntry
         handleGuess={(guess) =>
-          pushChannel(CHANNEL_CATEGORY, CHANNEL_ID, "guess", { guess })
+          pushChannel(CHANNEL_CATEGORY, CHANNEL_ID, USER, GUESS_PUSH_TYPE, {
+            guess,
+          })
         }
       ></GuessEntry>
       <div>

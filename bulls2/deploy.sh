@@ -2,7 +2,7 @@
 
 export SECRET_KEY_BASE=insecure
 export MIX_ENV=prod
-export PORT=4791
+export PORT=4792
 export NODEBIN=`pwd`/assets/node_modules/.bin
 export PATH="$PATH:$NODEBIN"
 

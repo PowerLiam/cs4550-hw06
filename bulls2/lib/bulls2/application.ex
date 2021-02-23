@@ -12,9 +12,11 @@ defmodule Bulls2.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Bulls2.PubSub},
       # Start the Endpoint (http/https)
-      Bulls2Web.Endpoint
+      Bulls2Web.Endpoint,
       # Start a worker by calling: Bulls2.Worker.start_link(arg)
       # {Bulls2.Worker, arg}
+      Bulls2.BackupAgent,
+      Bulls2.GameSup
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

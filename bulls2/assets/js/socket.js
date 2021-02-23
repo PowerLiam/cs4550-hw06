@@ -48,14 +48,14 @@ export function joinChannel(category, id, user, stateCallback) {
     channelStates[channelName][user].channel
       .join()
       .receive("ok", (resp) => {
-        updateState(category, id, resp);
+        updateState(category, id, user, resp);
       })
       .receive("error", (resp) => {
         console.error("Unable to join channel with name " + channelName, resp);
       });
     // Set up the newly created channel to receive state pushes from the server.
     channelStates[channelName][user].channel.on("push", (push) =>
-      updateState(category, id, push)
+      updateState(category, id, user, push)
     );
   } else {
     // The channel to join already exists, so the user is already registered.
@@ -75,7 +75,7 @@ export function pushChannel(category, id, user, type, message) {
   channelStates[channelName][user].channel
     .push(type, message)
     .receive("ok", (resp) => {
-      updateState(category, id, resp);
+      updateState(category, id, user, resp);
     })
     .receive("error", (resp) => {
       console.error("Unable to push to channel with name " + channelName, resp);

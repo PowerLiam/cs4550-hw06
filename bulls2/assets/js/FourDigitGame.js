@@ -20,7 +20,7 @@ function FourDigitGame() {
 
   function won() {
     return state.guesses.reduce((acc, guess) => {
-      return acc || guess.bulls2 === 4;
+      return acc || guess.bulls === 4;
     }, false);
   }
 

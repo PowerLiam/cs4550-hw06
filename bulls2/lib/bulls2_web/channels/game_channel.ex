@@ -6,7 +6,7 @@ defmodule Bulls2Web.GameChannel do
 
   @impl true
   def join("game:" <> id, %{"user" => user}, socket) do
-    if authorized?(payload) do
+    if authorized?(user) do
       IO.puts("User " + user + " joined game " + id)
       # Starts a GenServer process to serve the game with name 'id' if one does not
       # already exist.
@@ -17,9 +17,12 @@ defmodule Bulls2Web.GameChannel do
       |> assign(:id, id)      # The ID of the game for this user
       |> assign(:user, user)  # The user name of this user
 
-      # Get the game state from the GenServer process and return it to the user.
-      game = GameServer.peek(name)
-      view = Game.view(game)
+      # Get the game state from the GenServer process.
+      view = id
+      |> GameServer.peek()
+      |> Game.view()
+  
+      # Return the view to the user.
       {:ok, view, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -32,11 +35,13 @@ defmodule Bulls2Web.GameChannel do
     user = socket.assigns[:user]
     IO.puts("User " + user + " guessed " + guess)
 
-    # Make the guess, mutating the game, then obtain a view and return it to the user.
+    # Make the guess, mutating the game, then obtain a view.
     view = socket.assigns[:id]
     |> GameServer.guess(guess)
     |> Game.view(user)
-    {:reply, {:ok, view}, socket1}
+
+    # Return the view to the user.
+    {:reply, {:ok, view}, socket}
   end
 
   # Add authorization logic here as required.

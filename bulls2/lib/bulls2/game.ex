@@ -7,7 +7,7 @@ defmodule Bulls2.Game do
     }
   end
 
-  def guess(st, {user, guess}) do
+  def guess(st, {_user, guess}) do
     {valid_guess, _} = validate_guess(guess, MapSet.new(st.guesses))
     cond do
       won(st) ->
@@ -62,9 +62,9 @@ defmodule Bulls2.Game do
         {false, "guess wasn't 4 digits"}
       true ->
         {_, unique} = 
-          Enum.reduce(Enum.with_index(String.graphemes(guess)), 
+          Enum.reduce(String.graphemes(guess), 
             {MapSet.new(), true}, 
-            fn ({digit, index}, {digitsSeen, result}) ->
+            fn (digit, {digitsSeen, result}) ->
               updatedDigitsSeen = MapSet.put(digitsSeen, digit)
               if MapSet.member?(digitsSeen, digit) do
                 {updatedDigitsSeen, false}

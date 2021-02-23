@@ -13,7 +13,7 @@ defmodule Bulls2.GameSup do
   def init(_arg) do
     {:ok, _} = Registry.start_link(
       keys: :unique,
-      name: Bulls2.GameReg,
+      name: Bulls2.GameReg
     )
     DynamicSupervisor.init(strategy: :one_for_one)
   end

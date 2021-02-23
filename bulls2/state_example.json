@@ -1,0 +1,19 @@
+{
+  "winners": 
+    {
+      "1": ["player1", "player2"],
+      "2": ["player3"]
+
+    },
+  "guesses": 
+    {
+      "player1": ["1234", "2345", "3456", "4567", "6547"],
+      "player2": ["0987", "9876", "8765", "7654"],
+      "player3": ["pass", "pass", "5734", "pass"]
+    },
+  "observers":
+    [
+      "player4", "player5", "player6"
+    ],
+  "round": 5
+}

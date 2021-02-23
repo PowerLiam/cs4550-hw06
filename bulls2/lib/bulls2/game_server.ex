@@ -65,3 +65,4 @@ defmodule Bulls2.GameServer do
       Game.view(game, ""))
     {:noreply, game}
   end
+end

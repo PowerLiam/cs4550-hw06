@@ -44,7 +44,7 @@ export function joinChannel(category, id, user, stateCallback) {
     // must be made.
     console.log("Creating channel with name: " + channelName);
     channelStates[channelName].channel
-      .join()
+      .join("user", user)
       .receive("ok", (resp) => {
         updateState(category, id, resp);
       })
@@ -52,8 +52,9 @@ export function joinChannel(category, id, user, stateCallback) {
         console.error("Unable to join channel with name " + channelName, resp);
       });
     // Set up the newly created channel to receive state pushes from the server.
-    channelStates[channelName].channel
-      .on("push", (push) => updateState(category, id, push));
+    channelStates[channelName].channel.on("push", (push) =>
+      updateState(category, id, push)
+    );
   } else {
     // The channel to join already exists, so the caller should be notified of
     // the current state of the channel immediately! (synchronously)

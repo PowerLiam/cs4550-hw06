@@ -26,7 +26,7 @@ defmodule Bulls2.Game do
         %{
           guess: guess,
           cows: cow_count(secret, guess),
-          bulls2: bull_count(secret, guess)
+          bulls: bull_count(secret, guess)
         }
       end),
     }

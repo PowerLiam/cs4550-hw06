@@ -2,7 +2,7 @@ import "../css/FourDigitGame.css";
 import { useEffect, useState } from "react";
 import GuessDisplay from "./GuessDisplay.js";
 import GuessEntry from "./GuessEntry.js";
-import { joinChannel, pushChannel, resetChannel } from "./socket.js";
+import { joinChannel, pushChannel } from "./socket.js";
 
 function FourDigitGame() {
   const CHANNEL_CATEGORY = "game";

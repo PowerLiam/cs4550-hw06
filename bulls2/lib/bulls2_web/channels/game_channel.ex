@@ -8,7 +8,7 @@ defmodule Bulls2Web.GameChannel do
   @impl true
   def join("game:" <> id, %{"user" => user}, socket) do
     if authorized?(user) do
-      IO.puts("User " + user + " joined game " + id)
+      IO.puts("User #{user} joined game #{id}")
       # Starts a GenServer process to serve the game with name 'id' if one does not
       # already exist.
       GameServer.start(id)
@@ -34,7 +34,7 @@ defmodule Bulls2Web.GameChannel do
   def handle_in("guess", %{"guess" => guess}, socket) do
     # Get the user and game ID for this socket.
     user = socket.assigns[:user]
-    IO.puts("User " + user + " guessed " + guess)
+    IO.puts("User #{user} guessed #{guess} in game #{socket.assigns[:id]}")
 
     # Make the guess, mutating the game, then obtain a view.
     view = socket.assigns[:id]

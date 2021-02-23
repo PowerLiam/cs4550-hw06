@@ -34,7 +34,7 @@ export function joinChannel(category, id, user, stateCallback) {
 
   if (channelState === undefined) {
     channelStates[channelName] = {
-      channel: socket.channel(channelName),
+      channel: socket.channel(channelName, { user }),
       callbacks: new Set(),
       // The user isn't called back with the state until it has been provided
       // from the server.
@@ -44,7 +44,7 @@ export function joinChannel(category, id, user, stateCallback) {
     // must be made.
     console.log("Creating channel with name: " + channelName);
     channelStates[channelName].channel
-      .join("user", user)
+      .join()
       .receive("ok", (resp) => {
         updateState(category, id, resp);
       })

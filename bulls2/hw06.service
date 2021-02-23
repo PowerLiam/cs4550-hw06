@@ -1,0 +1,18 @@
+[Unit]
+Description=HW06 Elixir Bulls2 Game
+
+[Service]
+Type=simple
+User=hw04
+Group=hw04
+Restart=on-failure
+Environment=MIX_ENV=prod
+Environment=PORT=4792
+Environment=PROD=true
+Environment=LANG=en_US.UTF-8
+
+WorkingDirectory=/home/hw04/cs4550-hw06/bulls2
+ExecStart=/bin/bash /home/hw04/cs4550-hw06/bulls2/start.sh
+
+[Install]
+WantedBy=multi-user.target

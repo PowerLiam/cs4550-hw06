@@ -16,8 +16,7 @@ function FourDigitGame() {
   //TODO: I guess if joining a game in progress, the server will send a "setup: false", so I don't have to do a ton?
   // TODO: basically, behavior differences between starting a new game, joining a game in setup, and joining an active game
 
-  const [state, setState] = useState({ guesses: [] });
-  const [testState, setTestState] = useState({ users: {
+  const [state, setState] = useState({ users: {
     "player1": {
       "ready": false,
       "role": "player",
@@ -64,11 +63,11 @@ function FourDigitGame() {
 //TODO: duplicate usernames?
   function signin(displayText){
     let player = {ready: false, role: "observer", won: []}
-    let temp = testState.users;
+    let temp = state.users;
     temp[displayText.name] = player;
-    setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
+    setState({users: temp, game: state.game, setup: state.setup, rounds: state.rounds});
     setFrontState({user: displayText.name, channel: displayText.game});
-    joinChannel(CHANNEL_CATEGORY, displayText.name, displayText.gamer, setTestState);
+    joinChannel(CHANNEL_CATEGORY, displayText.name, displayText.gamer, setState);
     return;
   }
   
@@ -78,26 +77,30 @@ function FourDigitGame() {
   }
   
   function ready(){
-    let temp = testState.users;
+    let temp = state.users;
     temp[frontState.user].ready = !temp[frontState.user].ready;
-    setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
+    setState({users: temp, game: state.game, setup: state.setup, rounds: state.rounds});
     //TODO ACTUALLY PUSH A READY/UNREADY UPDATE TO THE SERVER
   }
 
   function swapRole(){
-    let temp = testState.users;
-    if(temp[frontState.user].role === "observer"){
+    let temp = state.users;
+    if(isObserver()){
       temp[frontState.user].role = "player";
     }
     else{
       temp[frontState.user].role = "observer";
     }
-    setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
+    setState({users: temp, game: state.game, setup: state.setup, rounds: state.rounds});
     //TODO ACTUALLY PUSH A ROLE UPDATE TO THE SERVER
   }
 
   function signingIn(){
     return frontState.user === "" && frontState.channel === ""; 
+  }
+  
+  function isObserver(){
+    return state.users[frontState.user].role === "observer"
   }
   
   //WON checking is game functionality and so if anyone wins, we go back to the setup with this game number tacked on, which would be done by an updatestate from elixir
@@ -106,17 +109,18 @@ function FourDigitGame() {
   return (
     <div className="FourDigitGame">
     {signingIn() && <Signin handleSignin={signin}></Signin>}
-    {!signingIn() && testState.setup && <Setup reset={reset} swapRole={swapRole} readyFunction={ready} gameName={frontState.channel} state={testState}/>}
-    {!signingIn() && !testState.setup && <div className="ActualGame">
+    {!signingIn() && state.setup && <Setup reset={reset} swapRole={swapRole} readyFunction={ready} gameName={frontState.channel} state={state}/>}
+    {!signingIn() && !state.setup && <div className="ActualGame">
       <GuessEntry
       reset={reset}
+      disabled={isObserver()}
         handleGuess={(guess) =>
           pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, GUESS_PUSH_TYPE, {
             guess,
           })
         }
       ></GuessEntry>
-      <GuessDisplay state={testState}></GuessDisplay>
+      <GuessDisplay state={state}></GuessDisplay>
       </div>}
     </div>
   );

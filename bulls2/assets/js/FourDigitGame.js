@@ -55,18 +55,11 @@ function FourDigitGame() {
     }] });
 
   //front state doesn't actually have to be in a useState, because it is solely used in the frontend and all changes that would require rerender update one of the actual useStates
-  let frontState = {user: "", channel: ""}
+  const [frontState, setFrontState] = useState({user: "", channel: ""});
 
 
 // player: {ready: T/F, role: "player/"observer", won: []}
 // {users: {}, game: 0, setup: true, rounds: []}
-
-  function won() {
-    return state.guesses.reduce((acc, guess) => {
-      return acc || guess.bulls === 4;
-    }, false);
-  }
-
 
 //TODO: duplicate usernames?
   function signin(displayText){
@@ -74,30 +67,49 @@ function FourDigitGame() {
     let temp = testState.users;
     temp[displayText.name] = player;
     setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
-    frontState.user = displayText.name;
-    frontState.channel = displayText.game
-    joinChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, setState);
+    setFrontState({user: displayText.name, channel: displayText.game});
+    joinChannel(CHANNEL_CATEGORY, displayText.name, displayText.gamer, setTestState);
+    return;
+  }
+  
+  function reset(){
+    setFrontState({user: "", channel: ""});
+    //TODO ACTUALLY LEAVE THE CHANNEL
   }
   
   function ready(){
     let temp = testState.users;
     temp[frontState.user].ready = !temp[frontState.user].ready;
     setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
-    console.log("after: " + temp[frontState.user].ready);
     //TODO ACTUALLY PUSH A READY/UNREADY UPDATE TO THE SERVER
   }
 
-  function signingIn(){
-    return Object.keys(testState.users).length === 0 && testState.game === 0;
+  function swapRole(){
+    let temp = testState.users;
+    if(temp[frontState.user].role === "observer"){
+      temp[frontState.user].role = "player";
+    }
+    else{
+      temp[frontState.user].role = "observer";
+    }
+    setTestState({users: temp, game: testState.game, setup: testState.setup, rounds: testState.rounds});
+    //TODO ACTUALLY PUSH A ROLE UPDATE TO THE SERVER
   }
+
+  function signingIn(){
+    return frontState.user === "" && frontState.channel === ""; 
+  }
+  
+  //WON checking is game functionality and so if anyone wins, we go back to the setup with this game number tacked on, which would be done by an updatestate from elixir
+  //TODO: Liam I have win checking in elixir if that's helpful
 
   return (
     <div className="FourDigitGame">
     {signingIn() && <Signin handleSignin={signin}></Signin>}
-	{console.log(testState)}
-    {!signingIn() && testState.setup && <Setup readyFunction={ready} gameName={frontState.channel} state={testState}/>}
+    {!signingIn() && testState.setup && <Setup reset={reset} swapRole={swapRole} readyFunction={ready} gameName={frontState.channel} state={testState}/>}
     {!signingIn() && !testState.setup && <div className="ActualGame">
       <GuessEntry
+      reset={reset}
         handleGuess={(guess) =>
           pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, GUESS_PUSH_TYPE, {
             guess,
@@ -105,7 +117,6 @@ function FourDigitGame() {
         }
       ></GuessEntry>
       <GuessDisplay state={testState}></GuessDisplay>
-      {won() && <h1>You win!!!</h1>}
       </div>}
     </div>
   );

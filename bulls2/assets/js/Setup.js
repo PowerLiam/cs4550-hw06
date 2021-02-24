@@ -1,7 +1,7 @@
 import "../css/Setup.css";
 import { useState } from "react";
 
-function Setup({ readyFunction, gameName, state}) {
+function Setup({ reset, swapRole, readyFunction, gameName, state}) {
 
   function parsePlayers(playerDetails){
   console.log(playerDetails);
@@ -24,6 +24,8 @@ function Setup({ readyFunction, gameName, state}) {
         {Object.entries(state.users).map(parsePlayers)}
       </div>
       <button onClick={readyFunction}>Ready or Unready</button>
+      <button onClick={swapRole}>Switch Player/Observer</button>
+      <button onClick={reset}>Leave Game</button>
     </div>
  )
  }

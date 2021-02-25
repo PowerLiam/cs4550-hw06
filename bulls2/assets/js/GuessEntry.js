@@ -29,6 +29,7 @@ function GuessEntry({ disabled, reset, handleGuess }) {
         disabled={disabled}
       ></input>
       <button disabled={disabled} onClick={() => handleGuessInternal(displayText)}>Guess</button>
+      <button disabled={disabled} onClick={() => handleGuessInternal("pass")}>Pass</button>
       <button onClick={reset}>Leave Game</button>
     </div>
   );

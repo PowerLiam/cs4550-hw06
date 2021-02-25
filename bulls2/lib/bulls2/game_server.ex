@@ -104,7 +104,7 @@ defmodule Bulls2.GameServer do
   def handle_info({:pass_round, name}, game) do
     # Process.send_after(self(), {:pass_round, name}, 10_000)
     game = Game.guess(game, "q")
-    Bulls2.Endpoint.broadcast!(
+    Bulls2Web.Endpoint.broadcast!(
       "game:#{name}",
       "push",
       Game.view(game))
@@ -112,7 +112,7 @@ defmodule Bulls2.GameServer do
   end
 
   def broadcast_state(name, game) do
-    Bulls2.Endpoint.broadcast!(
+    Bulls2Web.Endpoint.broadcast!(
       "game:#{name}",
       "push",
       Game.view(game))

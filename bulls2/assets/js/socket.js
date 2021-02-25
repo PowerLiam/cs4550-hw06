@@ -85,7 +85,7 @@ export function pushChannel(category, id, user, type, message) {
     });
 }
 
-export function leave(category, id, user, onLeave) {
+export function leaveChannel(category, id, user, onLeave) {
   let channelName = getChannelName(category, id);
 
   console.log(

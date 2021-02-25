@@ -69,7 +69,7 @@ defmodule Bulls2.Game do
   def auto_pass(st) do
     Enum.reduce(get_player_names(st), st,
       fn(name, acc) ->
-        {success, reason, new_state} = guess(acc, {name, "pass"})
+        {_success, _reason, new_state} = guess(acc, {name, "pass"})
         new_state
       end)
   end

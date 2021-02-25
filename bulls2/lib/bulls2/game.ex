@@ -45,12 +45,13 @@ defmodule Bulls2.Game do
   end
 
   def ready(st, {user, ready?}) do
+    new_st = st
     if st.setup do
-      st = %{st | users: update_ready(user, ready?, st.users)}
+      new_st = %{st | users: update_ready(user, ready?, st.users)}
     end
 
-    # If this ready makes it such that all players are ready, initiate the game.
-    if all_players_ready(st) do
+    if all_players_ready(new_st) do
+      # Initiate the game.
       %{
         secret: st.secret,
         users: st.users,
@@ -59,7 +60,7 @@ defmodule Bulls2.Game do
         rounds: [%{}],
       }
     else
-      st
+      new_st
     end
   end
 
@@ -82,7 +83,7 @@ defmodule Bulls2.Game do
       current_round = get_current_round(st)
 
       if !Map.has_key?(current_round, user) do
-        current_round = Map.put(current_round, user, make_guess_info(secret, guess))
+        current_round = Map.put(current_round, user, make_guess_info(st.secret, guess))
       end
 
       updated_rounds = get_previous_rounds(st) ++ [current_round]
@@ -116,7 +117,6 @@ defmodule Bulls2.Game do
   #    2. A round is not included in the view until all players have
   #       guessed or passed.
   def view(st) do
-    secret = st.secret
     completed_rounds = st.rounds
 
     # If the current round is not complete, omit it from the view
@@ -198,7 +198,7 @@ defmodule Bulls2.Game do
 
   def update_user_info(user, key, value, users) do
     Enum.map(
-      st.users, fn({name, info}) ->
+      users, fn({name, info}) ->
         if name == user do
           {user, Map.put(info, key, value)}
         else
@@ -220,7 +220,7 @@ defmodule Bulls2.Game do
   end
 
   def get_current_round(st) do
-    Enum.at(rounds, Enum.count(st.rounds) - 1)
+    Enum.at(st.rounds, Enum.count(st.rounds) - 1)
   end
 
   def get_previous_rounds(st) do

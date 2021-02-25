@@ -81,3 +81,23 @@ export function pushChannel(category, id, user, type, message) {
       console.error("Unable to push to channel with name " + channelName, resp);
     });
 }
+
+export function leave(category, id, user, onLeave) {
+  let channelName = getChannelName(category, id);
+
+  console.log(
+    "Leaving channel " + getChannelName(category, id),
+    channelStates[channelName][user].channel
+  );
+
+  channelStates[channelName][user].channel
+    .leave()
+    .receive("ok", () => {
+      console.log(`User ${user} successfully left channel ${channelName}.`);
+      onLeave();
+    })
+    .receive("ok", () => {
+      console.log(`User ${user} failed to leave channel ${channelName}.`);
+      onLeave();
+    });
+}

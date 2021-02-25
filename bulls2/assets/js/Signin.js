@@ -2,25 +2,25 @@
 import { useState } from "react";
 
 function Signin({ handleSignin }) {
-  const [displayText, setDisplayText] = useState({name: "", game: ""});
+  const [sessionInfo, setSessionInfo] = useState({name: "", game: ""});
 
   function updateName(ev) {
-    setDisplayText({name: ev.target.value, game: displayText.game});
+    setSessionInfo({name: ev.target.value, game: sessionInfo.game});
   }
 
   function updateGame(ev) {
-    setDisplayText({name: displayText.name, game: ev.target.value});
+    setSessionInfo({name: sessionInfo.name, game: ev.target.value});
   }
 
   function keyPress(ev) {
     if (ev.key === "Enter") {
-      handleSigninInternal(displayText);
+      handleSigninInternal(sessionInfo);
     }
   }
 
   function handleSigninInternal() {
-    handleSignin(displayText);
-    setDisplayText("");
+    handleSignin(sessionInfo);
+    setSessionInfo("");
   }
 
   return (
@@ -28,19 +28,19 @@ function Signin({ handleSignin }) {
     <div>Username: </div>
       <input
         type="text"
-        value={displayText.name}
+        value={sessionInfo.name}
         onChange={updateName}
         onKeyPress={keyPress}
       ></input>
     <div>Game name: </div>
       <input
         type="text"
-        value={displayText.game}
+        value={sessionInfo.game}
         onChange={updateGame}
         onKeyPress={keyPress}
       ></input>
       <div>
-        <button onClick={() => handleSigninInternal(displayText)}>Signin</button>
+        <button onClick={() => handleSigninInternal(sessionInfo)}>Signin</button>
       </div>
     </div>
   );

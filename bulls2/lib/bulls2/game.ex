@@ -29,24 +29,24 @@ defmodule Bulls2.Game do
   end
 
   def become_observer(st, user) do
-    if Map.has_key?(st.users, user) and st.setup do
-      %{st.users[user] | role: "observer"}
+    if st.setup do
+      %{st | users: update_role(user, "observer", st.users)}
     else
       st
     end
   end
 
   def become_player(st, user) do
-    if Map.has_key?(st.users, user) and st.setup do
-      %{st.users[user] | role: "player"}
+    if st.setup do
+     %{st | users: update_role(user, "player", st.users)}
     else
       st
     end
   end
 
   def ready(st, {user, ready?}) do
-    if Map.has_key?(st.users, user) and st.setup do
-      %{st.users[user] | ready: "ready"}
+    if st.setup do
+      st = %{st | users: update_ready(user, ready?, st.users)}
     end
 
     # If this ready makes it such that all players are ready, initiate the game.
@@ -186,6 +186,25 @@ defmodule Bulls2.Game do
         acc && data.ready
       end
     )
+  end
+
+  def update_role(user, role, users) do
+    update_user_info(user, "role", role, users)
+  end
+
+  def update_ready(user, ready, users) do
+    update_user_info(user, "ready", ready, users)
+  end
+
+  def update_user_info(user, key, value, users) do
+    Enum.map(
+      st.users, fn({name, info}) ->
+        if name == user do
+          {user, Map.put(info, key, value)}
+        else
+          {user, info}
+        end
+      end)
   end
 
   def round_complete(st, round) do

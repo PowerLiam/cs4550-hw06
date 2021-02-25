@@ -4,7 +4,6 @@ import { useState } from "react";
 function Setup({ reset, swapRole, readyFunction, gameName, state}) {
 
   function parsePlayers(playerDetails){
-  console.log(playerDetails);
     return(
       <div className="Player-element" key={playerDetails[0]}>
         <div className="Player-details" key={playerDetails[0]}>

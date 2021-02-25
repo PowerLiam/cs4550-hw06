@@ -11,6 +11,10 @@ function FourDigitGame() {
   const CHANNEL_ID = "1";
   const USER = "testuser";
   const GUESS_PUSH_TYPE = "guess";
+  const BECOME_OBSERVER = "become_observer";
+  const BECOME_PLAYER = "become_player";
+  const READY = "ready";
+  
 
 
   //TODO: I guess if joining a game in progress, the server will send a "setup: false", so I don't have to do a ton?
@@ -32,7 +36,8 @@ function FourDigitGame() {
     //TODO send this to the server instead of setting it
     setState({users: temp, game: state.game, setup: state.setup, rounds: state.rounds});
     setFrontState({user: displayText.name, channel: displayText.game});
-    joinChannel(CHANNEL_CATEGORY, displayText.name, displayText.gamer, setState);
+    //don't use the front state values here since they're async and may not have updated yet
+    joinChannel(CHANNEL_CATEGORY, displayText.game, displayText.name, setState);
     return;
   }
   
@@ -49,15 +54,12 @@ function FourDigitGame() {
   }
 
   function swapRole(){
-    let temp = state.users;
     if(isObserver()){
-      temp[frontState.user].role = "player";
+      pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, BECOME_PLAYER, {})
     }
     else{
-      temp[frontState.user].role = "observer";
+      pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, BECOME_OBSERVER, {})
     }
-    setState({users: temp, game: state.game, setup: state.setup, rounds: state.rounds});
-    //TODO ACTUALLY PUSH A ROLE UPDATE TO THE SERVER INSTEAD OF THIS WORKAROUND
   }
 
   function signingIn(){

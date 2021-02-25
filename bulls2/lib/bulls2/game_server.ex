@@ -31,6 +31,24 @@ defmodule Bulls2.GameServer do
     )
   end
 
+  # Leave?  (Potential improvement)
+
+  def join(name, user) do
+    GenServer.call(reg(name), {:join, name, user})
+  end
+
+  def become_observer(name, user) do
+    GenServer.call(reg(name), {:become_observer, name, user})
+  end
+
+  def become_player(name, user) do
+    GenServer.call(reg(name), {:become_player, name, user})
+  end
+
+   def ready(name, user, ready?) do
+    GenServer.call(reg(name), {:ready, name, user, ready?})
+  end
+
   def guess(name, user, guess) do
     GenServer.call(reg(name), {:guess, name, user, guess})
   end
@@ -42,13 +60,39 @@ defmodule Bulls2.GameServer do
   # ----------------------------- IMPL -------------------------------
 
   def init(game) do
-    # Process.send_after(self(), :pook, 10_000)
     {:ok, game}
+  end
+
+  def handle_call({:join, name, user}, _from, game) do
+    {game, success} = Game.join(game, user)
+    if success do
+      broadcast_state(name, game)
+    end
+    {:reply, {game, success}, game}
+  end
+
+  def handle_call({:become_observer, name, user}, _from, game) do
+    game = Game.become_observer(game, user)
+    broadcast_state(name, game)
+    {:reply, game, game}
+  end
+
+  def handle_call({:become_player, name, user}, _from, game) do
+    game = Game.become_player(game, user)
+    broadcast_state(name, game)
+    {:reply, game, game}
+  end
+
+  def handle_call({:ready, name, user}, _from, game) do
+    game = Game.ready(game, user)
+    broadcast_state(name, game)
+    {:reply, game, game}
   end
 
   def handle_call({:guess, name, user, guess}, _from, game) do
     game = Game.guess(game, {user, guess})
     BackupAgent.put(name, game)
+    broadcast_state(name, game)
     {:reply, game, game}
   end
 
@@ -57,12 +101,20 @@ defmodule Bulls2.GameServer do
   end
 
   # Unused for now
-  def handle_info(:pook, game) do
+  def handle_info({:pass_round, name}, game) do
+    # Process.send_after(self(), {:pass_round, name}, 10_000)
     game = Game.guess(game, "q")
     Bulls2.Endpoint.broadcast!(
-      "game:1", # FIXME: Game name should be in state
-      "view",
+      "game:#{name}",
+      "push",
       Game.view(game))
     {:noreply, game}
+  end
+
+  def broadcast_state(name, game) do
+    Bulls2.Endpoint.broadcast!(
+      "game:#{name}",
+      "push",
+      Game.view(game))
   end
 end

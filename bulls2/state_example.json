@@ -1,19 +1,43 @@
 {
-  "winners": 
-    {
-      "1": ["player1", "player2"],
-      "2": ["player3"]
-
+  "users": {
+    "player1": {
+      "ready": false,
+      "role": "player",
+      "won": [1,3]
     },
-  "guesses": 
-    {
-      "player1": ["1234", "2345", "3456", "4567", "6547"],
-      "player2": ["0987", "9876", "8765", "7654"],
-      "player3": ["pass", "pass", "5734", "pass"]
+    "player2": {
+      "ready": false,
+      "role": "player",
+      "won": [4]
     },
-  "observers":
-    [
-      "player4", "player5", "player6"
-    ],
-  "round": 5
+    "player3": {
+      "ready": false,
+      "role": "player",
+      "won": [2]
+    },
+    "player4": {
+      "ready": false,
+      "role": "observer",
+      "won": []
+    }
+  },
+  "game": 5,
+  "setup": false,
+  "rounds": [
+    {
+      "player1": {"guess" : "1234", "cows": 2, "bulls": 2}, 
+      "player2": {"guess" : "5678", "cows": 2, "bulls": 2}, 
+      "player3": {"guess" : "pass", "cows": 0, "bulls": 0}
+    },
+    {
+      "player1": {"guess" : "2345", "cows": 1, "bulls": 2}, 
+      "player2": {"guess" : "7654", "cows": 1, "bulls": 0}, 
+      "player3": {"guess" : "1634", "cows": 2, "bulls": 0}
+    },
+    {
+      "player1": {"guess" : "pass", "cows": 0, "bulls": 0}, 
+      "player2": {"guess" : "pass", "cows": 0, "bulls": 0}, 
+      "player3": {"guess" : "1624", "cows": 2, "bulls": 0}
+    }
+  ]
 }

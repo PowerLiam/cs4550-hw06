@@ -75,7 +75,7 @@ defmodule Bulls2.Game do
   def guess(st, {user, guess}) do
     {valid_guess, _} = validate_guess(guess)
 
-    if !st.setup and valid_guess and !guessed_in_current_round(user) do
+    if !st.setup and valid_guess and !guessed_in_current_round?(user) do
       # 1) Blindly add the guess to the current round.
       # 2) Check if the current round is complete.
       #       If so, check for winners, if they exist, move to setup mode
@@ -88,7 +88,7 @@ defmodule Bulls2.Game do
 
       updated_rounds = get_previous_rounds(st) ++ [current_round]
 
-      if is_round_complete(current_round) do
+      if is_round_complete?(current_round) do
         winners = get_winner_names(current_round)
         if Enum.count(winners) > 0 do
           # Move to setup phase
@@ -120,7 +120,7 @@ defmodule Bulls2.Game do
     completed_rounds = st.rounds
 
     # If the current round is not complete, omit it from the view
-    if !current_round_complete(st) do
+    if !current_round_complete?(st) do
       completed_rounds = get_previous_rounds(st)
     end
 
@@ -146,12 +146,12 @@ defmodule Bulls2.Game do
     round
     |> Map.to_list()
     |> Enum.filter(
-      fn ({name, guess_info}) ->
+      fn ({_name, guess_info}) ->
         guess_info.bulls === 4
       end
     )
     |> Enum.map(
-      fn ({name, guess_info}) ->
+      fn ({name, _guess_info}) ->
         name
       end
     )
@@ -161,12 +161,12 @@ defmodule Bulls2.Game do
     st.users
     |> Map.to_list()
     |> Enum.filter(
-      fn ({name, data}) ->
+      fn ({_name, data}) ->
         data.role == "player"
       end
     )
     |> Enum.map(
-      fn ({name, data}) ->
+      fn ({name, _data}) ->
         name
       end
     )

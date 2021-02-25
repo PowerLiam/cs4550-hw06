@@ -78,7 +78,10 @@ export function pushChannel(category, id, user, type, message) {
       updateState(category, id, user, resp);
     })
     .receive("error", (resp) => {
-      console.error("Unable to push to channel with name " + channelName, resp);
+      console.error(
+        `Unable to push to channel with name ${channelName}.  Reason: ${resp.reason}`,
+        resp
+      );
     });
 }
 

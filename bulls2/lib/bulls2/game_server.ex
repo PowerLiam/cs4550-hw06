@@ -90,10 +90,13 @@ defmodule Bulls2.GameServer do
   end
 
   def handle_call({:guess, name, user, guess}, _from, game) do
-    game = Game.guess(game, {user, guess})
-    BackupAgent.put(name, game)
-    broadcast_state(name, game)
-    {:reply, game, game}
+    {success, reason, game} = Game.guess(game, {user, guess})
+    if success do
+      BackupAgent.put(name, game)
+      broadcast_state(name, game)
+    end
+   
+    {:reply, {success, reason, game}, game}
   end
 
   def handle_call({:peek, _name}, _from, game) do

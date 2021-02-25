@@ -69,7 +69,8 @@ defmodule Bulls2.Game do
   def auto_pass(st) do
     Enum.reduce(get_player_names(st), st,
       fn(name, acc) ->
-        guess(acc, {name, "pass"})
+        {success, reason, new_state} = guess(acc, {name, "pass"})
+        new_state
       end)
   end
 
@@ -92,23 +93,39 @@ defmodule Bulls2.Game do
         winners = get_winner_names(current_round)
         if Enum.count(winners) > 0 do
           # Move to setup phase
-          %{
-            secret: random_secret([]),
-            users: add_winners(winners, st.users, st.game),
-            game: st.game + 1,
-            setup: true,
-            rounds: [],
+          {
+            true, "",
+            %{
+              secret: random_secret([]),
+              users: add_winners(winners, st.users, st.game),
+              game: st.game + 1,
+              setup: true,
+              rounds: [],
+            }
           }
         else
           # Prepare next round for play
-          %{st | rounds: updated_rounds ++ [%{}]}
+           {
+            true, "",
+            %{st | rounds: updated_rounds ++ [%{}]}
+           }
         end
       else
         # Continue with current round
-        %{st | rounds: updated_rounds}
+         {
+            true, "",
+            %{st | rounds: updated_rounds}
+         }
       end
     else
-      st
+      cond do
+        st.setup ->
+          {false, "can't guess during game setup", st}
+        !valid_guess ->
+          {false, "guess #{guess} was invalid", st}
+        true ->
+          {false, "already guessed this round", st}
+      end
     end
   end
 

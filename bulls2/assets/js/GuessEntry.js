@@ -1,7 +1,7 @@
 import "../css/GuessEntry.css";
 import { useState } from "react";
 
-function GuessEntry({ handleGuess }) {
+function GuessEntry({ disabled, reset, handleGuess }) {
   const [displayText, setDisplayText] = useState("");
 
   function updateText(ev) {
@@ -26,8 +26,11 @@ function GuessEntry({ handleGuess }) {
         value={displayText}
         onChange={updateText}
         onKeyPress={keyPress}
+        disabled={disabled}
       ></input>
-      <button onClick={() => handleGuessInternal(displayText)}>Guess</button>
+      <button disabled={disabled} onClick={() => handleGuessInternal(displayText)}>Guess</button>
+      <button disabled={disabled} onClick={() => handleGuessInternal("pass")}>Pass</button>
+      <button onClick={reset}>Leave Game</button>
     </div>
   );
 }

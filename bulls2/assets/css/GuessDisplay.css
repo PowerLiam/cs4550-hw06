@@ -1,3 +1,7 @@
+div {
+  font-size: 18px;
+  white-space: pre-wrap;
+}
 .GuessDisplay-list {
   display: flex;
   flex-direction: column;
@@ -5,8 +9,20 @@
 .GuessDisplay-element {
   display: flex;
   flex-direction: row;
+  padding-top: 30px;
+}
+
+.GuessDisplay-row {
+  display: flex;
+  padding-right: 30px;
+  flex-direction: row;
 }
 
 .GuessDisplay-element > div {
+  padding-right: 30px;
+}
+
+
+.GuessDisplay-row > div {
   padding-right: 10px;
 }

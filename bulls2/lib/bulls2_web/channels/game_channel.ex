@@ -26,7 +26,7 @@ defmodule Bulls2Web.GameChannel do
         {:ok, Game.view(game), socket}
       else
         # Return an error to the user, ensuring that they don't join this channel
-        {:error, %{reason: "couldn't join game #{id}"}
+        {:error, %{reason: "couldn't join game #{id}"}}
       end
     else
       {:error, %{reason: "unauthorized"}}

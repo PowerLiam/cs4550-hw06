@@ -52,7 +52,7 @@ defmodule Bulls2.Game do
         st
       end
 
-    if all_players_ready(st) do
+    if all_players_ready?(st) do
       # Initiate the game.
       %{
         secret: st.secret,

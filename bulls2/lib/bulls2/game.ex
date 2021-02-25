@@ -45,12 +45,14 @@ defmodule Bulls2.Game do
   end
 
   def ready(st, {user, ready?}) do
-    new_st = st
-    if st.setup do
-      new_st = %{st | users: update_ready(user, ready?, st.users)}
-    end
+    st =
+      if st.setup do
+        %{st | users: update_ready(user, ready?, st.users)}
+      else
+        st
+      end
 
-    if all_players_ready(new_st) do
+    if all_players_ready(st) do
       # Initiate the game.
       %{
         secret: st.secret,
@@ -60,7 +62,7 @@ defmodule Bulls2.Game do
         rounds: [%{}],
       }
     else
-      new_st
+      st
     end
   end
 
@@ -80,15 +82,13 @@ defmodule Bulls2.Game do
       # 2) Check if the current round is complete.
       #       If so, check for winners, if they exist, move to setup mode
       #       If not, add the new empty map for the next round and continue
-      current_round = get_current_round(st)
-
-      if !Map.has_key?(current_round, user) do
-        current_round = Map.put(current_round, user, make_guess_info(st.secret, guess))
-      end
-
+      current_round = Map.put_new(
+        get_current_round(st), 
+        user, 
+        make_guess_info(st.secret, guess))
       updated_rounds = get_previous_rounds(st) ++ [current_round]
 
-      if round_complete?(current_round) do
+      if round_complete?(st, current_round) do
         winners = get_winner_names(current_round)
         if Enum.count(winners) > 0 do
           # Move to setup phase
@@ -117,12 +117,13 @@ defmodule Bulls2.Game do
   #    2. A round is not included in the view until all players have
   #       guessed or passed.
   def view(st) do
-    completed_rounds = st.rounds
-
     # If the current round is not complete, omit it from the view
-    if !current_round_complete?(st) do
-      completed_rounds = get_previous_rounds(st)
-    end
+    completed_rounds = 
+      if !current_round_complete?(st) do
+        get_previous_rounds(st)
+      else
+        st.rounds
+      end
 
     %{
       users: st.users,
@@ -214,7 +215,7 @@ defmodule Bulls2.Game do
   end
 
   def current_round_complete?(st) do
-    round_complete(st, get_current_round)
+    round_complete?(st, get_current_round(st))
   end
 
   def get_current_round(st) do

@@ -73,6 +73,10 @@ function FourDigitGame() {
     return frontState.user === "" && frontState.channel === "";
   }
 
+  function checkErrors() {
+    return "checking for errors"
+  }
+
   function isObserver() {
     return (
       state.users[frontState.user] &&
@@ -94,7 +98,8 @@ function FourDigitGame() {
       )}
       {!signingIn() && !state.setup && (
         <div className="ActualGame">
-          <GuessEntry
+          <div>{checkErrors()}</div>
+	  <GuessEntry
             reset={reset}
             disabled={isObserver()}
             handleGuess={(guess) =>

@@ -61,28 +61,42 @@ defmodule Bulls2.Game do
         end
 
       if all_players_ready?(st) do
-        # Initiate the game.
-        %{
-          secret: st.secret,
-          users: st.users,
-          game: st.game,
-          setup: false,
-          rounds: [%{}],
+        # Initiate the game, setting the autopass timer for the first round.
+        {
+          {true, 0},
+          %{
+            secret: st.secret,
+            users: st.users,
+            game: st.game,
+            setup: false,
+            rounds: [%{}],
+          }
         }
       else
-        st
+        {{false, 0}, st}
       end
     else
-      st
+      {{false, 0}, st}
     end
   end
 
-  def auto_pass(st) do
-    Enum.reduce(get_player_names(st), st,
-      fn(name, acc) ->
-        {_success, _reason, new_state} = guess(acc, {name, "pass"})
-        new_state
-      end)
+  def auto_pass(st, round) do
+    new_state = 
+      Enum.reduce(get_player_names(st),
+        st,
+        fn(name, acc) ->
+          {_success, _reason, new_state, {_should_autopass, _autopass_round}} = guess(acc, {name, "pass"})
+          new_state
+        end)
+    # 1) We are autopassing a completed round
+    #       We are by definition not autopassing the current round
+    # 2) We are autoapssing an incomplete round
+    #       We are by definition autopassing the current round
+    if round == Enum.count(st.rounds) - 1 do
+      {{true, round + 1}, new_state}
+    else
+      {{false, 0}, new_state}
+    end
   end
 
 
@@ -116,13 +130,15 @@ defmodule Bulls2.Game do
               game: st.game + 1,
               setup: true,
               rounds: [],
-            }
+            },
+            {false, 0}
           }
         else
-          # Prepare next round for play
+          # Prepare next round for play, setting the autopass timer
            {
             true, "",
-            %{st | rounds: updated_rounds ++ [%{}]}
+            %{st | rounds: updated_rounds ++ [%{}]},
+            {true, Enum.count(updated_rounds)}
            }
         end
       else
@@ -130,6 +146,7 @@ defmodule Bulls2.Game do
          {
             true, "",
             %{st | rounds: updated_rounds}
+            {false, 0}
          }
       end
     else

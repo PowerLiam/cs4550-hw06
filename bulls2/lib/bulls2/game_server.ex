@@ -90,10 +90,14 @@ defmodule Bulls2.GameServer do
   end
 
   def handle_call({:guess, name, user, guess}, _from, game) do
-    {success, reason, game} = Game.guess(game, {user, guess})
+    {success, reason, game, {should_autopass, autopass_round}} = Game.guess(game, {user, guess})
     if success do
       BackupAgent.put(name, game)
       broadcast_state(name, game)
+    end
+
+    if should_autopass do
+      Process.send_after(self(), {:pass_round, name, autopass_round}, 30_000)
     end
    
     {:reply, {success, reason, game}, game}
@@ -104,13 +108,14 @@ defmodule Bulls2.GameServer do
   end
 
   # Unused for now
-  def handle_info({:pass_round, name}, game) do
-    # Process.send_after(self(), {:pass_round, name}, 10_000)
-    game = Game.guess(game, "q")
-    Bulls2Web.Endpoint.broadcast!(
-      "game:#{name}",
-      "push",
-      Game.view(game))
+  def handle_info({:pass_round, name, round}, game) do
+    {{should_autopass, autopass_round}, game} = Game.auto_pass(game, round)
+
+    if should_autopass do
+      Process.send_after(self(), {:pass_round, name, autopass_round}, 30_000)
+    end
+
+    broadcast_state(name, game)
     {:noreply, game}
   end
 

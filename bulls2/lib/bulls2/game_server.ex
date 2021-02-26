@@ -84,7 +84,12 @@ defmodule Bulls2.GameServer do
   end
 
   def handle_call({:ready, name, user, ready}, _from, game) do
-    game = Game.ready(game, {user, ready})
+    {{should_autopass, autopass_round}, game} = Game.ready(game, {user, ready})
+
+    if should_autopass do
+      Process.send_after(self(), {:pass_round, name, autopass_round}, 30_000)
+    end
+
     broadcast_state(name, game)
     {:reply, game, game}
   end

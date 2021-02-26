@@ -214,11 +214,11 @@ defmodule Bulls2.Game do
   end
 
   def update_role(user, role, users) do
-    update_user_info(user, "role", role, users)
+    update_user_info(user, :role, role, users)
   end
 
   def update_ready(user, ready, users) do
-    update_user_info(user, "ready", ready, users)
+    update_user_info(user, :ready, ready, users)
   end
 
   def update_user_info(user, key, value, users) do

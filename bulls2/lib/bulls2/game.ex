@@ -109,13 +109,15 @@ defmodule Bulls2.Game do
           # Move to setup phase
           {
             true, "",
-            %{
-              secret: random_secret([]),
-              users: add_winners(winners, st.users, st.game),
-              game: st.game + 1,
-              setup: true,
-              rounds: [],
-            }
+            unready_all_users(
+              %{
+                secret: random_secret([]),
+                users: add_winners(winners, st.users, st.game),
+                game: st.game + 1,
+                setup: true,
+                rounds: [],
+              }
+            )
           }
         else
           # Prepare next round for play

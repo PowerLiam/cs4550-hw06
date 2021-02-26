@@ -20,11 +20,15 @@ defmodule Bulls2.Game do
       Map.has_key?(st.users, user) ->
         {st, false}
       st.setup ->
-        %{st | users: Map.put_new(st.users, user, new_user("player"))}
-        {st, true}
+        {
+          %{st | users: Map.put_new(st.users, user, new_user("player"))},
+           true
+        }
       true ->
-        %{st | users: Map.put_new(st.users, user, new_user("observer"))}
-        {st, true}
+        {
+          %{st | users: Map.put_new(st.users, user, new_user("observer"))},
+           true
+        }
     end
   end
 

@@ -109,15 +109,14 @@ defmodule Bulls2.Game do
           # Move to setup phase
           {
             true, "",
-            unready_all_users(
-              %{
-                secret: random_secret([]),
-                users: add_winners(winners, st.users, st.game),
-                game: st.game + 1,
-                setup: true,
-                rounds: [],
-              }
-            )
+            %{
+              secret: random_secret([]),
+              users: unready_all_users(
+                add_winners(winners, st.users, st.game)),
+              game: st.game + 1,
+              setup: true,
+              rounds: [],
+            }
           }
         else
           # Prepare next round for play
@@ -235,7 +234,7 @@ defmodule Bulls2.Game do
     !player?(st, user)
   end
 
-  def unready_all_users(st) do
+  def unready_all_users(users) do
     Enum.into(
       Enum.map(st.users, fn ({user, info}) -> 
         {user, %{info | ready: false}}

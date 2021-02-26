@@ -2,14 +2,14 @@
 import { useState } from "react";
 
 function Signin({ handleSignin }) {
-  const [sessionInfo, setSessionInfo] = useState({name: "", game: ""});
+  const [sessionInfo, setSessionInfo] = useState({ name: "", game: "" });
 
   function updateName(ev) {
-    setSessionInfo({name: ev.target.value, game: sessionInfo.game});
+    setSessionInfo({ name: ev.target.value, game: sessionInfo.game });
   }
 
   function updateGame(ev) {
-    setSessionInfo({name: sessionInfo.name, game: ev.target.value});
+    setSessionInfo({ name: sessionInfo.name, game: ev.target.value });
   }
 
   function keyPress(ev) {
@@ -20,19 +20,18 @@ function Signin({ handleSignin }) {
 
   function handleSigninInternal() {
     handleSignin(sessionInfo);
-    setSessionInfo("");
   }
 
   return (
     <div className="Signin">
-    <div>Username: </div>
+      <div>Username: </div>
       <input
         type="text"
         value={sessionInfo.name}
         onChange={updateName}
         onKeyPress={keyPress}
       ></input>
-    <div>Game name: </div>
+      <div>Game name: </div>
       <input
         type="text"
         value={sessionInfo.game}
@@ -40,7 +39,9 @@ function Signin({ handleSignin }) {
         onKeyPress={keyPress}
       ></input>
       <div>
-        <button onClick={() => handleSigninInternal(sessionInfo)}>Signin</button>
+        <button onClick={() => handleSigninInternal(sessionInfo)}>
+          Signin
+        </button>
       </div>
     </div>
   );

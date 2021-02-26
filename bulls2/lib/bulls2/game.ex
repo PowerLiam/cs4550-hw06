@@ -148,6 +148,14 @@ defmodule Bulls2.Game do
           }
         else
           # Prepare next round for play, setting the autopass timer
+          IO.puts("Moving to next round")
+          IO.inspect(updated_rounds)
+          IO.inspect(updated_rounds ++ [%{}])
+          IO.inspect({
+            true, "",
+            %{st | rounds: updated_rounds ++ [%{}]},
+            {true, Enum.count(updated_rounds), st.game}
+           })
            {
             true, "",
             %{st | rounds: updated_rounds ++ [%{}]},

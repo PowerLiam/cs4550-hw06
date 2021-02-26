@@ -127,7 +127,7 @@ defmodule Bulls2.Game do
         user, 
         make_guess_info(st.secret, guess))
       IO.inspect(current_round)
-      previous rounds = get_previous_rounds(st)
+      previous_rounds = get_previous_rounds(st)
       updated_rounds = List.insert_at(previous_rounds, Enum.count(previous_rounds), current_round)
       IO.inspect(updated_rounds)
 

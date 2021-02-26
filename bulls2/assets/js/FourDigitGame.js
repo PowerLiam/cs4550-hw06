@@ -74,7 +74,10 @@ function FourDigitGame() {
   }
 
   function isObserver() {
-    return !signingIn() && state.users[frontState.user].role === "observer";
+    return (
+      state.users[frontState.user] &&
+      state.users[frontState.user].role === "observer"
+    );
   }
 
   return (

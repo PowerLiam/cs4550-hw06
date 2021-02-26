@@ -225,9 +225,9 @@ defmodule Bulls2.Game do
     Enum.map(
       users, fn({name, info}) ->
         if name == user do
-          {user, Map.put(info, key, value)}
+          {name, Map.put(info, key, value)}
         else
-          {user, info}
+          {name, info}
         end
       end)
   end

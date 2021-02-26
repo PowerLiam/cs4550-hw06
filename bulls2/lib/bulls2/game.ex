@@ -126,7 +126,9 @@ defmodule Bulls2.Game do
         get_current_round(st), 
         user, 
         make_guess_info(st.secret, guess))
+      IO.inspect(current_round)
       updated_rounds = get_previous_rounds(st) ++ [current_round]
+      IO.inspect(updated_rounds)
 
       if round_complete?(st, current_round) do
         winners = get_winner_names(current_round)

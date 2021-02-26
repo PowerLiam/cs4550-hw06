@@ -154,7 +154,7 @@ defmodule Bulls2.Game do
           IO.inspect(List.insert_at(updated_rounds. Enum.count(updated_rounds), %{}))
            {
             true, "",
-            %{st | rounds: List.insert_at(updated_rounds. Enum.count(updated_rounds)), %{}},
+            %{st | rounds: List.insert_at(updated_rounds. Enum.count(updated_rounds), %{})},
             {true, Enum.count(updated_rounds), st.game}
            }
         end

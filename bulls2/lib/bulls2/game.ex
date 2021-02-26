@@ -145,7 +145,7 @@ defmodule Bulls2.Game do
         # Continue with current round
          {
             true, "",
-            %{st | rounds: updated_rounds}
+            %{st | rounds: updated_rounds},
             {false, 0}
          }
       end

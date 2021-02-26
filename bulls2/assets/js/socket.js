@@ -69,7 +69,7 @@ export function joinChannel(category, id, user, stateCallback, onError) {
   }
 }
 
-export function pushChannel(category, id, user, type, message) {
+export function pushChannel(category, id, user, type, message, setError) {
   let channelName = getChannelName(category, id);
 
   console.log(
@@ -82,12 +82,14 @@ export function pushChannel(category, id, user, type, message) {
     .push(type, message)
     .receive("ok", (resp) => {
       updateState(category, id, user, resp);
+      setError("");
     })
     .receive("error", (resp) => {
       console.error(
         `Unable to push to channel with name ${channelName}.  Reason: ${resp.reason}`,
         resp
       );
+      setError(resp.reason);
     });
 }
 

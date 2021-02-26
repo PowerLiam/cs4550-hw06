@@ -15,9 +15,6 @@ function FourDigitGame() {
   const BECOME_PLAYER = "become_player";
   const READY = "ready";
 
-  //TODO: I guess if joining a game in progress, the server will send a "setup: false", so I don't have to do a ton?
-  // TODO: basically, behavior differences between starting a new game, joining a game in setup, and joining an active game
-
   const [state, setState] = useState({
     users: {},
     game: 0,
@@ -25,19 +22,18 @@ function FourDigitGame() {
     rounds: [],
   });
 
-  const [frontState, setFrontState] = useState({ user: "", channel: "" });
+  const [frontState, setFrontState] = useState({ user: "", channel: "", error: "" });
 
   // player: {ready: T/F, role: "player/"observer", won: []}
   // {users: {}, game: 0, setup: true, rounds: []}
 
-  //TODO: duplicate usernames?
   function signin(sessionInfo) {
     joinChannel(
       CHANNEL_CATEGORY,
       sessionInfo.game,
       sessionInfo.name,
       (state) => {
-        setFrontState({ user: sessionInfo.name, channel: sessionInfo.game });
+        setFrontState({ user: sessionInfo.name, channel: sessionInfo.game, errors: frontState.error });
         setState(state);
       },
       clearFrontState
@@ -52,11 +48,11 @@ function FourDigitGame() {
   function ready() {
     pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, READY, {
       ready: !state.users[frontState.user].ready,
-    });
+    }, setErrorBox);
   }
 
   function clearFrontState() {
-    setFrontState({ user: "", channel: "" });
+    setFrontState({ user: "", channel: "", errors: "" });
   }
 
   function swapRole() {
@@ -65,7 +61,8 @@ function FourDigitGame() {
       frontState.channel,
       frontState.user,
       isObserver() ? BECOME_PLAYER : BECOME_OBSERVER,
-      {}
+      {},
+      setErrorBox
     );
   }
 
@@ -73,8 +70,8 @@ function FourDigitGame() {
     return frontState.user === "" && frontState.channel === "";
   }
 
-  function checkErrors() {
-    return "checking for errors"
+  function setErrorBox(errorString) {
+    setFrontState({user: frontState.user, channel: frontState.channel, error: errorString});
   }
 
   function isObserver() {
@@ -98,7 +95,7 @@ function FourDigitGame() {
       )}
       {!signingIn() && !state.setup && (
         <div className="ActualGame">
-          <div>{checkErrors()}</div>
+          <div>{frontState.error}</div>
 	  <GuessEntry
             reset={reset}
             disabled={isObserver()}
@@ -110,7 +107,8 @@ function FourDigitGame() {
                 GUESS_PUSH_TYPE,
                 {
                   guess,
-                }
+                },
+                setErrorBox
               )
             }
           ></GuessEntry>

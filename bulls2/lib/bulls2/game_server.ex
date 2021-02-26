@@ -96,6 +96,7 @@ defmodule Bulls2.GameServer do
 
   def handle_call({:guess, name, user, guess}, _from, game) do
     {success, reason, game, {should_autopass, autopass_round, autopass_game}} = Game.guess(game, {user, guess})
+    
     if success do
       BackupAgent.put(name, game)
       broadcast_state(name, game)

@@ -84,7 +84,7 @@ defmodule Bulls2.Game do
     if game == st.game do       
       # 1) We are autopassing a completed round
       #       We are by definition not autopassing the current round
-      # 2) We are autoapssing an incomplete round
+      # 2) We are autopassing an incomplete round
       #       We are by definition autopassing the current round
       if round == Enum.count(st.rounds) - 1 do
         {
@@ -102,7 +102,7 @@ defmodule Bulls2.Game do
             end)
         }
       else
-        {{false, 0, st.game}, st}
+        {{false, -1, -1}, st}
       end
     else
       {{false, 0, -1}, st}
@@ -168,8 +168,10 @@ defmodule Bulls2.Game do
           {false, "can't guess during game setup", st, {false, -1, -1}}
         !valid_guess ->
           {false, "guess #{guess} was invalid", st, {false, -1, -1}}
-        true ->
+        guessed_in_current_round?(st, user) ->
           {false, "already guessed this round", st, {false, -1, -1}}
+        true ->
+          {false, "unknown error", st, {false, -1, -1}}
       end
     end
   end

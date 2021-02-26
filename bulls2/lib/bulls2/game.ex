@@ -63,7 +63,7 @@ defmodule Bulls2.Game do
       if all_players_ready?(st) do
         # Initiate the game, setting the autopass timer for the first round.
         {
-          {true, 0},
+          {true, 0, st.game},
           %{
             secret: st.secret,
             users: st.users,
@@ -73,30 +73,35 @@ defmodule Bulls2.Game do
           }
         }
       else
-        {{false, 0}, st}
+        {{false, 0, st.game}, st}
       end
     else
-      {{false, 0}, st}
+      {{false, 0, st.game}, st}
     end
   end
 
-  def auto_pass(st, round) do
-    new_state = 
-      Enum.reduce(get_player_names(st),
-        st,
-        fn(name, acc) ->
-          {_success, _reason, new_state, {_should_autopass, _autopass_round}} = guess(acc, {name, "pass"})
-          new_state
-        end)
-    # 1) We are autopassing a completed round
-    #       We are by definition not autopassing the current round
-    # 2) We are autoapssing an incomplete round
-    #       We are by definition autopassing the current round
-    if round == Enum.count(st.rounds) - 1 do
-      {{true, round + 1}, new_state}
+  def auto_pass(st, round, game) do
+    if game == st.game do
+      new_state = 
+        Enum.reduce(get_player_names(st),
+          st,
+          fn(name, acc) ->
+            {_success, _reason, new_state, {_should_autopass, _autopass_round}} = guess(acc, {name, "pass"})
+            new_state
+          end)
+      # 1) We are autopassing a completed round
+      #       We are by definition not autopassing the current round
+      # 2) We are autoapssing an incomplete round
+      #       We are by definition autopassing the current round
+      if round == Enum.count(st.rounds) - 1 do
+        {{true, round + 1, st.game}, new_state}
+      else
+        {{false, 0, st.game}, new_state}
+      end
     else
-      {{false, 0}, new_state}
+      {{false, 0, -1}, st}
     end
+    
   end
 
 
@@ -131,14 +136,14 @@ defmodule Bulls2.Game do
               setup: true,
               rounds: [],
             },
-            {false, 0}
+            {false, 0, st.game}
           }
         else
           # Prepare next round for play, setting the autopass timer
            {
             true, "",
             %{st | rounds: updated_rounds ++ [%{}]},
-            {true, Enum.count(updated_rounds)}
+            {true, Enum.count(updated_rounds), st.game}
            }
         end
       else
@@ -146,19 +151,19 @@ defmodule Bulls2.Game do
          {
             true, "",
             %{st | rounds: updated_rounds},
-            {false, 0}
+            {false, 0, st.game}
          }
       end
     else
       cond do
         observer?(st, user) ->
-          {false, "can't guess as an observer", st, {false, 0}}
+          {false, "can't guess as an observer", st, {false, 0, st.game}}
         st.setup ->
-          {false, "can't guess during game setup", st, {false, 0}}
+          {false, "can't guess during game setup", st, {false, 0, st.game}}
         !valid_guess ->
-          {false, "guess #{guess} was invalid", st, {false, 0}}
+          {false, "guess #{guess} was invalid", st, {false, 0, st.game}}
         true ->
-          {false, "already guessed this round", st, {false, 0}}
+          {false, "already guessed this round", st, {false, 0, st.game}}
       end
     end
   end

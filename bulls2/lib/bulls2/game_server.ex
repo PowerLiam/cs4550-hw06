@@ -84,10 +84,10 @@ defmodule Bulls2.GameServer do
   end
 
   def handle_call({:ready, name, user, ready}, _from, game) do
-    {{should_autopass, autopass_round}, game} = Game.ready(game, {user, ready})
+    {{should_autopass, autopass_round, autopass_game}, game} = Game.ready(game, {user, ready})
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
     end
 
     broadcast_state(name, game)
@@ -95,14 +95,14 @@ defmodule Bulls2.GameServer do
   end
 
   def handle_call({:guess, name, user, guess}, _from, game) do
-    {success, reason, game, {should_autopass, autopass_round}} = Game.guess(game, {user, guess})
+    {success, reason, game, {should_autopass, autopass_round, autopass_game}} = Game.guess(game, {user, guess})
     if success do
       BackupAgent.put(name, game)
       broadcast_state(name, game)
     end
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
     end
    
     {:reply, {success, reason, game}, game}
@@ -113,11 +113,11 @@ defmodule Bulls2.GameServer do
   end
 
   # Unused for now
-  def handle_info({:pass_round, name, round}, game) do
-    {{should_autopass, autopass_round}, game} = Game.auto_pass(game, round)
+  def handle_info({:pass_round, name, round, game_number}, game) do
+    {{should_autopass, autopass_round, autopass_game}, game} = Game.auto_pass(game, round, game_number)
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
     end
 
     broadcast_state(name, game)

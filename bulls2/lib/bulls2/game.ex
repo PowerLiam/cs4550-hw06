@@ -18,7 +18,7 @@ defmodule Bulls2.Game do
     # a game with the same name.
     cond do
       Map.has_key?(st.users, user) ->
-        {st, false}
+        {st, true}
       st.setup ->
         {
           %{st | users: Map.put_new(st.users, user, new_user("player"))},

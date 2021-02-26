@@ -265,22 +265,25 @@ defmodule Bulls2.Game do
 
   def add_winners(winners, users, game_number) do
     winner_set = MapSet.new(winners)
-    Enum.map(
-      users,
-      fn ({user, user_info}) ->
-        if MapSet.member?(winner_set, user) do
-          {
-            user, 
-             %{
-              ready: user_info.ready,
-              role: user_info.role,
-              won: user_info.won ++ [game_number]
+    Enum.into(
+      Enum.map(
+        users,
+        fn ({user, user_info}) ->
+          if MapSet.member?(winner_set, user) do
+            {
+              user, 
+              %{
+                ready: user_info.ready,
+                role: user_info.role,
+                won: user_info.won ++ [game_number]
+              }
             }
-          }
-        else 
-          {user, user_info}
+          else 
+            {user, user_info}
+          end
         end
-      end
+      ),
+      %{}
     )
   end
 

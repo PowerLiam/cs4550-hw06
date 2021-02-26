@@ -236,7 +236,7 @@ defmodule Bulls2.Game do
 
   def unready_all_users(users) do
     Enum.into(
-      Enum.map(st.users, fn ({user, info}) -> 
+      Enum.map(users, fn ({user, info}) -> 
         {user, %{info | ready: false}}
       end),
       %{}

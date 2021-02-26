@@ -152,13 +152,13 @@ defmodule Bulls2.Game do
     else
       cond do
         observer?(st, user) ->
-          {false, "can't guess as an observer", st}
+          {false, "can't guess as an observer", st, {false, 0}}
         st.setup ->
-          {false, "can't guess during game setup", st}
+          {false, "can't guess during game setup", st, {false, 0}}
         !valid_guess ->
-          {false, "guess #{guess} was invalid", st}
+          {false, "guess #{guess} was invalid", st, {false, 0}}
         true ->
-          {false, "already guessed this round", st}
+          {false, "already guessed this round", st, {false, 0}}
       end
     end
   end

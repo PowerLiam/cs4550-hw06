@@ -25,7 +25,7 @@ function updateState(category, id, user, state) {
   channelStates[channelName][user].callback(state);
 }
 
-export function joinChannel(category, id, user, stateCallback) {
+export function joinChannel(category, id, user, stateCallback, onError) {
   console.log("Joining channel " + getChannelName(category, id));
 
   let channelName = getChannelName(category, id);
@@ -52,6 +52,7 @@ export function joinChannel(category, id, user, stateCallback) {
       })
       .receive("error", (resp) => {
         console.error("Unable to join channel with name " + channelName, resp);
+        onError();
       });
     // Set up the newly created channel to receive state pushes from the server.
     channelStates[channelName][user].channel.on("push", (push) =>
@@ -85,7 +86,7 @@ export function pushChannel(category, id, user, type, message) {
     });
 }
 
-export function leaveChannel(category, id, user, onLeave) {
+export function leaveChannel(category, id, user) {
   let channelName = getChannelName(category, id);
 
   console.log(
@@ -97,10 +98,8 @@ export function leaveChannel(category, id, user, onLeave) {
     .leave()
     .receive("ok", () => {
       console.log(`User ${user} successfully left channel ${channelName}.`);
-      onLeave();
     })
     .receive("error", () => {
       console.log(`User ${user} failed to leave channel ${channelName}.`);
-      onLeave();
     });
 }

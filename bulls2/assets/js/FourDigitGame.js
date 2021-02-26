@@ -39,22 +39,24 @@ function FourDigitGame() {
       (state) => {
         setFrontState({ user: sessionInfo.name, channel: sessionInfo.game });
         setState(state);
-      }
+      },
+      clearFrontState
     );
   }
 
   function reset() {
-    leaveChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, () =>
-      setFrontState({ user: "", channel: "" })
-    );
-
-    //TODO ACTUALLY LEAVE THE CHANNEL
+    leaveChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user);
+    clearFrontState();
   }
 
   function ready() {
     pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, READY, {
       ready: !state.users[frontState.user].ready,
     });
+  }
+
+  function clearFrontState() {
+    setFrontState({ user: "", channel: "" });
   }
 
   function swapRole() {
@@ -72,7 +74,7 @@ function FourDigitGame() {
   }
 
   function isObserver() {
-    return state.users[frontState.user].role === "observer";
+    return !signingIn() && state.users[frontState.user].role === "observer";
   }
 
   return (

@@ -223,17 +223,20 @@ defmodule Bulls2.Game do
 
   def update_user_info(user, key, value, users) do
     IO.inspect(users)
-    ret = Enum.map(
-      users, fn({name, info}) ->
-        IO.inspect(user)
-        IO.inspect(name)
-        IO.inspect(info)
-        if name == user do
-          {name, Map.put(info, key, value)}
-        else
-          {name, info}
-        end
-      end)
+    ret = Enum.into(
+      Enum.map(
+        users, fn({name, info}) ->
+          IO.inspect(user)
+          IO.inspect(name)
+          IO.inspect(info)
+          if name == user do
+            {name, Map.put(info, key, value)}
+          else
+            {name, info}
+          end
+        end),
+        %{}
+    )
     IO.inspect(ret)
     ret
   end

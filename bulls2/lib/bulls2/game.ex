@@ -135,11 +135,14 @@ defmodule Bulls2.Game do
   #       guessed or passed.
   def view(st) do
     # If the current round is not complete, omit it from the view
-    completed_rounds = 
-      if !current_round_complete?(st) do
-        get_previous_rounds(st)
-      else
-        st.rounds
+    completed_rounds =
+      cond do
+        st.setup ->
+          st.rounds
+        !current_round_complete?(st) ->
+          get_previous_rounds(st)
+        true ->
+          st.rounds
       end
 
     %{

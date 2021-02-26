@@ -99,7 +99,7 @@ export function leaveChannel(category, id, user, onLeave) {
       console.log(`User ${user} successfully left channel ${channelName}.`);
       onLeave();
     })
-    .receive("ok", () => {
+    .receive("error", () => {
       console.log(`User ${user} failed to leave channel ${channelName}.`);
       onLeave();
     });

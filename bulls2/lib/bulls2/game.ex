@@ -127,7 +127,8 @@ defmodule Bulls2.Game do
         user, 
         make_guess_info(st.secret, guess))
       IO.inspect(current_round)
-      updated_rounds = get_previous_rounds(st) ++ [current_round]
+      previous rounds = get_previous_rounds(st)
+      updated_rounds = List.insert_at(previous_rounds, Enum.count(previous_rounds), current_round)
       IO.inspect(updated_rounds)
 
       if round_complete?(st, current_round) do
@@ -150,15 +151,10 @@ defmodule Bulls2.Game do
           # Prepare next round for play, setting the autopass timer
           IO.puts("Moving to next round")
           IO.inspect(updated_rounds)
-          IO.inspect(updated_rounds ++ [%{}])
-          IO.inspect({
-            true, "",
-            %{st | rounds: updated_rounds ++ [%{}]},
-            {true, Enum.count(updated_rounds), st.game}
-           })
+          IO.inspect(List.insert_at(updated_rounds. Enum.count(updated_rounds), %{}))
            {
             true, "",
-            %{st | rounds: updated_rounds ++ [%{}]},
+            %{st | rounds: List.insert_at(updated_rounds. Enum.count(updated_rounds)), %{}},
             {true, Enum.count(updated_rounds), st.game}
            }
         end

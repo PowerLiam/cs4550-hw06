@@ -48,10 +48,10 @@ defmodule Bulls2.Game do
     end
   end
 
-  def ready(st, {user, ready?}) do
+  def ready(st, {user, ready}) do
     st =
       if st.setup do
-        %{st | users: update_ready(user, ready?, st.users)}
+        %{st | users: update_ready(user, ready, st.users)}
       else
         st
       end

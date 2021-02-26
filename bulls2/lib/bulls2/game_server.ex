@@ -45,8 +45,8 @@ defmodule Bulls2.GameServer do
     GenServer.call(reg(name), {:become_player, name, user})
   end
 
-   def ready(name, user, ready?) do
-    GenServer.call(reg(name), {:ready, name, user, ready?})
+   def ready(name, user, ready) do
+    GenServer.call(reg(name), {:ready, name, user, ready})
   end
 
   def guess(name, user, guess) do
@@ -83,8 +83,8 @@ defmodule Bulls2.GameServer do
     {:reply, game, game}
   end
 
-  def handle_call({:ready, name, user}, _from, game) do
-    game = Game.ready(game, user)
+  def handle_call({:ready, name, user, ready}, _from, game) do
+    game = Game.ready(game, {user, ready})
     broadcast_state(name, game)
     {:reply, game, game}
   end

@@ -34,7 +34,10 @@ defmodule Bulls2.Game do
 
   def become_observer(st, user) do
     if st.setup do
-      %{st | users: update_role(user, "observer", st.users)}
+      %{st | users: 
+        update_role(user, "observer", 
+          update_ready(user, false, st.users))
+      }
     else
       st
     end
@@ -49,22 +52,26 @@ defmodule Bulls2.Game do
   end
 
   def ready(st, {user, ready}) do
-    st =
-      if st.setup do
-        %{st | users: update_ready(user, ready, st.users)}
+    if player?(st, user) do
+      st =
+        if st.setup do
+          %{st | users: update_ready(user, ready, st.users)}
+        else
+          st
+        end
+
+      if all_players_ready?(st) do
+        # Initiate the game.
+        %{
+          secret: st.secret,
+          users: st.users,
+          game: st.game,
+          setup: false,
+          rounds: [%{}],
+        }
       else
         st
       end
-
-    if all_players_ready?(st) do
-      # Initiate the game.
-      %{
-        secret: st.secret,
-        users: st.users,
-        game: st.game,
-        setup: false,
-        rounds: [%{}],
-      }
     else
       st
     end
@@ -82,7 +89,10 @@ defmodule Bulls2.Game do
   def guess(st, {user, guess}) do
     {valid_guess, _} = validate_guess(guess)
 
-    if !st.setup and valid_guess and !guessed_in_current_round?(st, user) do
+    if player?(st, user) and 
+      !st.setup and 
+      valid_guess and 
+      !guessed_in_current_round?(st, user) do
       # 1) Blindly add the guess to the current round.
       # 2) Check if the current round is complete.
       #       If so, check for winners, if they exist, move to setup mode
@@ -123,6 +133,8 @@ defmodule Bulls2.Game do
       end
     else
       cond do
+        observer?(st, user) ->
+          {false, "can't guess as an observer", st}
         st.setup ->
           {false, "can't guess during game setup", st}
         !valid_guess ->
@@ -210,6 +222,23 @@ defmodule Bulls2.Game do
       fn ({_name, data}, acc) ->
         acc && data.ready
       end
+    )
+  end
+
+  def player?(st, user) do
+    st.users[user].role == "player"
+  end
+
+  def observer?(st, user) do
+    !player?(st, user)
+  end
+
+  def unready_all_users(st) do
+    Enum.into(
+      Enum.map(st.users, fn ({user, info}) -> 
+        {user, %{info | ready: false}}
+      end),
+      %{}
     )
   end
 

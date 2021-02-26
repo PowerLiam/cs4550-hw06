@@ -26,6 +26,7 @@ function updateState(category, id, user, state) {
 }
 
 export function joinChannel(category, id, user, stateCallback, onError) {
+  console.info(channelStates);
   console.log("Joining channel " + getChannelName(category, id));
 
   let channelName = getChannelName(category, id);
@@ -35,8 +36,12 @@ export function joinChannel(category, id, user, stateCallback, onError) {
     channelStates[channelName] = {};
   }
 
-  // If this user hasn't joined this channel yet, initialize the state for the user.
-  if (channelStates[channelName][user] === undefined) {
+  // If this user hasn't joined this channel yet, or they have but the channel is CLOSED,
+  // re-initialize this user's state for the channel.
+  if (
+    channelStates[channelName][user] === undefined ||
+    channelStates[channelName][user].channel.state === "closed"
+  ) {
     channelStates[channelName][user] = {
       channel: socket.channel(channelName, { user }),
       callback: stateCallback,
@@ -59,8 +64,8 @@ export function joinChannel(category, id, user, stateCallback, onError) {
       updateState(category, id, user, push)
     );
   } else {
-    // The channel to join already exists, so the user is already registered.
-    // This is now a no-op.
+    // The channel to join already exists and IS OPEN, so the user is already registered.
+    // Do nothing.
   }
 }
 

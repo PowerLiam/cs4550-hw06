@@ -5,8 +5,7 @@ div {
 .GuessDisplay-list {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  max-height: 50vh;
+  overflow-y: auto;
   height: 50vh;
 }
 .GuessDisplay-element {

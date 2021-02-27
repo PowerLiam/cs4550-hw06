@@ -6,7 +6,6 @@ div {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  min-height: 50vh;
   max-height: 50vh;
   height: 50vh;
 }
@@ -26,7 +25,14 @@ div {
   padding-right: 30px;
 }
 
-
 .GuessDisplay-row > div {
   padding-right: 10px;
+}
+
+.GuessDisplay-label {
+  color: rgb(24, 24, 65);
+}
+
+.GuessDisplay-player {
+  color: rgb(196, 45, 45);
 }

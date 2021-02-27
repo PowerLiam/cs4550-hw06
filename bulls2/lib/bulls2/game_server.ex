@@ -87,7 +87,7 @@ defmodule Bulls2.GameServer do
     {{should_autopass, autopass_round, autopass_game}, game} = Game.ready(game, {user, ready})
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 30_000)
     end
 
     broadcast_state(name, game)
@@ -103,7 +103,7 @@ defmodule Bulls2.GameServer do
     end
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 30_000)
     end
    
     {:reply, {success, reason, game}, game}
@@ -118,7 +118,7 @@ defmodule Bulls2.GameServer do
     {{should_autopass, autopass_round, autopass_game}, game} = Game.auto_pass(game, round, game_number)
 
     if should_autopass do
-      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 10_000)
+      Process.send_after(self(), {:pass_round, name, autopass_round, autopass_game}, 30_000)
     end
 
     broadcast_state(name, game)

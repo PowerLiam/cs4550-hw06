@@ -87,18 +87,22 @@ defmodule Bulls2.Game do
       # 2) We are autopassing an incomplete round
       #       We are by definition autopassing the current round
       if round == Enum.count(st.rounds) - 1 do
+        round_to_pass = get_current_round(st)
         {
           {true, round + 1, st.game},
-          Enum.reduce(
-            get_player_names(st), st, 
+          Enum.reduce(get_player_names(st), st, 
             fn(name, acc) ->
-              {
-                _success, 
-                _reason, 
-                new_state, 
-                {_should_autopass, _autopass_round, _autopass_game}
-              } = guess(acc, {name, "pass"})
-              new_state
+              if !Map.has_key?(round_to_pass, name) do
+                {
+                  _success, 
+                  _reason, 
+                  new_state, 
+                  {_should_autopass, _autopass_round, _autopass_game}
+                } = guess(acc, {name, "pass"})
+                new_state
+              else
+                acc
+              end
             end)
         }
       else

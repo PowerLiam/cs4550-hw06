@@ -22,7 +22,11 @@ function FourDigitGame() {
     rounds: [],
   });
 
-  const [frontState, setFrontState] = useState({ user: "", channel: "", error: "" });
+  const [frontState, setFrontState] = useState({
+    user: "",
+    channel: "",
+    error: "",
+  });
 
   // player: {ready: T/F, role: "player/"observer", won: []}
   // {users: {}, game: 0, setup: true, rounds: []}
@@ -33,7 +37,11 @@ function FourDigitGame() {
       sessionInfo.game,
       sessionInfo.name,
       (state) => {
-        setFrontState({ user: sessionInfo.name, channel: sessionInfo.game, errors: frontState.error });
+        setFrontState({
+          user: sessionInfo.name,
+          channel: sessionInfo.game,
+          errors: frontState.error,
+        });
         setState(state);
       },
       clearFrontState
@@ -46,9 +54,16 @@ function FourDigitGame() {
   }
 
   function ready() {
-    pushChannel(CHANNEL_CATEGORY, frontState.channel, frontState.user, READY, {
-      ready: !state.users[frontState.user].ready,
-    }, setErrorBox);
+    pushChannel(
+      CHANNEL_CATEGORY,
+      frontState.channel,
+      frontState.user,
+      READY,
+      {
+        ready: !state.users[frontState.user].ready,
+      },
+      setErrorBox
+    );
   }
 
   function clearFrontState() {
@@ -71,7 +86,11 @@ function FourDigitGame() {
   }
 
   function setErrorBox(errorString) {
-    setFrontState({user: frontState.user, channel: frontState.channel, error: errorString});
+    setFrontState({
+      user: frontState.user,
+      channel: frontState.channel,
+      error: errorString,
+    });
   }
 
   function isObserver() {
@@ -95,8 +114,7 @@ function FourDigitGame() {
       )}
       {!signingIn() && !state.setup && (
         <div className="ActualGame">
-          <div>{frontState.error}</div>
-	  <GuessEntry
+          <GuessEntry
             reset={reset}
             disabled={isObserver()}
             handleGuess={(guess) =>
@@ -112,6 +130,7 @@ function FourDigitGame() {
               )
             }
           ></GuessEntry>
+          <div>{frontState.error}</div>
           <GuessDisplay state={state}></GuessDisplay>
         </div>
       )}

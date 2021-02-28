@@ -16,12 +16,15 @@ function GuessDisplay({ state: { rounds } }) {
   return (
     <div className="GuessDisplay">
       <div className="GuessDisplay-list">
-        {reversed_rounds.map((players, i) => (
-          <div className="GuessDisplay-element" key={i}>
+        {reversed_rounds.map((round, i) => (
+          <div
+            className="GuessDisplay-element"
+            key={reversed_rounds.length - i}
+          >
             <span className="GuessDisplay-label">
               Round {reversed_rounds.length - i}:{" "}
             </span>
-            {Object.entries(players).map(function (x) {
+            {Object.entries(round).map(function (x) {
               return makeRow(x, i);
             })}
           </div>

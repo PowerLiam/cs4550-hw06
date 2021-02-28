@@ -12,7 +12,7 @@ function makeRow(playerAndGuess, round) {
 }
 
 function GuessDisplay({ state: { rounds } }) {
-  let reversed_rounds = rounds.reverse();
+  let reversed_rounds = rounds.slice().reverse();
   return (
     <div className="GuessDisplay">
       <div className="GuessDisplay-list">
